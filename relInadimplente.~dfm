@@ -1,0 +1,122 @@
+inherited FmFrContratInadimplente: TFmFrContratInadimplente
+  Width = 813
+  Height = 479
+  Caption = 'Relatorio de Inadimplente'
+  PixelsPerInch = 96
+  TextHeight = 13
+  inherited RLReportH: TRLReport
+    Title = 'CONTRATANTES COM MAIS DE 4 T'#205'TULOS EM ABERTO'
+    inherited RLBandSummaryH: TRLBand
+      Top = 126
+    end
+    inherited RLBandDetailH: TRLBand
+      Top = 110
+      object RLDBText1: TRLDBText
+        Left = 8
+        Top = 0
+        Width = 77
+        Height = 13
+        DataField = 'cd_contratante'
+        DataSource = DataSourceH
+      end
+      object RLDBText2: TRLDBText
+        Left = 93
+        Top = 0
+        Width = 80
+        Height = 13
+        DataField = 'nm_contratante'
+        DataSource = DataSourceH
+      end
+      object RLDBText3: TRLDBText
+        Left = 348
+        Top = 0
+        Width = 57
+        Height = 13
+        DataField = 'dt_inclusao'
+        DataSource = DataSourceH
+      end
+      object RLDBText4: TRLDBText
+        Left = 471
+        Top = 0
+        Width = 54
+        Height = 13
+        Alignment = taRightJustify
+        DataField = 'qtMensalid'
+        DataSource = DataSourceH
+      end
+      object RLDBText5: TRLDBText
+        Left = 604
+        Top = 0
+        Width = 43
+        Height = 13
+        DataField = 'qtManut'
+        DataSource = DataSourceH
+      end
+    end
+    inherited RLBandColumnHeaderH: TRLBand
+      Top = 94
+      object RLLabel1: TRLLabel
+        Left = 8
+        Top = 0
+        Width = 44
+        Height = 13
+        Caption = 'C'#211'DIGO'
+      end
+      object RLLabel2: TRLLabel
+        Left = 93
+        Top = 2
+        Width = 109
+        Height = 13
+        Caption = 'NOME CONTRATANTE'
+      end
+      object RLLabel3: TRLLabel
+        Left = 348
+        Top = 2
+        Width = 54
+        Height = 13
+        Caption = 'INCLUS'#195'O'
+      end
+      object RLLabel4: TRLLabel
+        Left = 436
+        Top = 2
+        Width = 90
+        Height = 13
+        Caption = 'QT MENSALIDADE'
+      end
+      object RLLabel5: TRLLabel
+        Left = 556
+        Top = 2
+        Width = 90
+        Height = 13
+        Caption = 'QT MANUTEN'#199#195'O'
+      end
+    end
+    inherited RLBandHeaderH: TRLBand
+      Height = 55
+      inherited RLSystemInfoTitH: TRLSystemInfo
+        Top = 18
+      end
+      inherited RLSystemInfoLastPgH: TRLSystemInfo
+        Top = 33
+      end
+      inherited RLLabelBarraH: TRLLabel
+        Top = 33
+      end
+      inherited RLSystemInfoPgH: TRLSystemInfo
+        Top = 33
+      end
+    end
+  end
+  inherited DataSourceH: TDataSource
+    DataSet = sp_relContratInadimplente
+  end
+  object sp_relContratInadimplente: TADOStoredProc
+    Connection = DM.ADOConn
+    CursorType = ctStatic
+    LockType = ltBatchOptimistic
+    ProcedureName = 'sp_relContratInadimplente'
+    Parameters = <>
+    Left = 136
+    Top = 176
+  end
+end

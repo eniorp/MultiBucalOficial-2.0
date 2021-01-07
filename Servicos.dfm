@@ -1,0 +1,1065 @@
+object FormServicos: TFormServicos
+  Left = 126
+  Top = 65
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsSingle
+  Caption = 'Manuten'#231#227'o Servi'#231'os'
+  ClientHeight = 618
+  ClientWidth = 802
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'MS Sans Serif'
+  Font.Style = []
+  OldCreateOrder = False
+  OnActivate = FormActivate
+  OnClose = FormClose
+  OnCreate = FormCreate
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Panel1: TPanel
+    Left = 0
+    Top = 582
+    Width = 802
+    Height = 36
+    Align = alBottom
+    BevelOuter = bvNone
+    TabOrder = 0
+    object Panel15: TPanel
+      Left = 461
+      Top = 0
+      Width = 341
+      Height = 36
+      Align = alClient
+      BevelInner = bvLowered
+      TabOrder = 0
+      object BitBtnImprimir: TBitBtn
+        Left = 106
+        Top = 2
+        Width = 75
+        Height = 32
+        Hint = 'Imprimir Cadastro'
+        Caption = '&Imprimir'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+        OnClick = BitBtnImprimirClick
+        Glyph.Data = {
+          76010000424D7601000000000000760000002800000020000000100000000100
+          0400000000000001000000000000000000001000000010000000000000000000
+          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00300000000000
+          0003377777777777777308888888888888807F33333333333337088888888888
+          88807FFFFFFFFFFFFFF7000000000000000077777777777777770F8F8F8F8F8F
+          8F807F333333333333F708F8F8F8F8F8F9F07F333333333337370F8F8F8F8F8F
+          8F807FFFFFFFFFFFFFF7000000000000000077777777777777773330FFFFFFFF
+          03333337F3FFFF3F7F333330F0000F0F03333337F77773737F333330FFFFFFFF
+          03333337F3FF3FFF7F333330F00F000003333337F773777773333330FFFF0FF0
+          33333337F3F37F3733333330F08F0F0333333337F7337F7333333330FFFF0033
+          33333337FFFF7733333333300000033333333337777773333333}
+        Layout = blGlyphTop
+        NumGlyphs = 2
+        Spacing = -2
+      end
+      object BitBtnSair: TBitBtn
+        Left = 188
+        Top = 2
+        Width = 74
+        Height = 32
+        Hint = 'Sair do Cadastro'
+        Caption = '&Sair'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 1
+        Kind = bkClose
+      end
+      object BitBtn1: TBitBtn
+        Left = 26
+        Top = 4
+        Width = 75
+        Height = 32
+        Hint = 'Localizar servico pelo codigo'
+        Caption = '&Localizar'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 2
+        OnClick = BitBtn1Click
+        Glyph.Data = {
+          76010000424D7601000000000000760000002800000020000000100000000100
+          04000000000000010000130B0000130B00001000000000000000000000000000
+          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
+          333333333333333333FF33333333333330003FF3FFFFF3333777003000003333
+          300077F777773F333777E00BFBFB033333337773333F7F33333FE0BFBF000333
+          330077F3337773F33377E0FBFBFBF033330077F3333FF7FFF377E0BFBF000000
+          333377F3337777773F3FE0FBFBFBFBFB039977F33FFFFFFF7377E0BF00000000
+          339977FF777777773377000BFB03333333337773FF733333333F333000333333
+          3300333777333333337733333333333333003333333333333377333333333333
+          333333333333333333FF33333333333330003333333333333777333333333333
+          3000333333333333377733333333333333333333333333333333}
+        Layout = blGlyphTop
+        NumGlyphs = 2
+        Spacing = -2
+      end
+    end
+    object Panel13: TPanel
+      Left = 0
+      Top = 0
+      Width = 461
+      Height = 36
+      Align = alLeft
+      BevelInner = bvLowered
+      TabOrder = 1
+      object DBNavigatorCadastro: TDBNavigator
+        Left = 2
+        Top = 2
+        Width = 457
+        Height = 32
+        DataSource = DataSourceServicos
+        VisibleButtons = [nbFirst, nbPrior, nbNext, nbLast, nbInsert, nbDelete, nbPost, nbCancel]
+        Align = alClient
+        Hints.Strings = (
+          'Primeiro'
+          'Anterior'
+          'Pr'#243'ximo'
+          #218'ltimo'
+          'Acrescentar'
+          'Excluir'
+          'Editar'
+          'Gravar'
+          'Cancelar'
+          'Atualizar')
+        ParentShowHint = False
+        ShowHint = True
+        TabOrder = 0
+      end
+    end
+  end
+  object PageControl1: TPageControl
+    Left = 0
+    Top = 0
+    Width = 802
+    Height = 582
+    ActivePage = TabSheetServico
+    Align = alClient
+    Style = tsFlatButtons
+    TabOrder = 1
+    OnChange = PageControl1Change
+    object TabSheetServico: TTabSheet
+      Caption = '&Servi'#231'o'
+      object PanelD: TPanel
+        Left = 505
+        Top = 0
+        Width = 289
+        Height = 551
+        Align = alRight
+        BevelOuter = bvNone
+        TabOrder = 0
+        object GBServExecEmDente: TGroupBox
+          Left = 9
+          Top = 93
+          Width = 272
+          Height = 127
+          Caption = 'Tipo de Dente onde o servi'#231'o '#233' executado'
+          TabOrder = 0
+          object DBRGOclInc: TDBRadioGroup
+            Left = 11
+            Top = 14
+            Width = 255
+            Height = 34
+            Columns = 3
+            DataField = 'tipo_dente'
+            DataSource = DataSourceServicos
+            Enabled = False
+            Items.Strings = (
+              '&Ambos'
+              '&Oclusal'
+              '&Incisal')
+            TabOrder = 0
+            Values.Strings = (
+              'A'
+              'O'
+              'I')
+            OnChange = DBRGOclIncChange
+          end
+          object DBRGPermDeci: TDBRadioGroup
+            Left = 11
+            Top = 48
+            Width = 255
+            Height = 34
+            Columns = 3
+            DataField = 'Perm_deci'
+            DataSource = DataSourceServicos
+            Enabled = False
+            Items.Strings = (
+              '&Ambos'
+              '&Permanente'
+              '&Dec'#237'duo')
+            TabOrder = 1
+            Values.Strings = (
+              'A'
+              'P'
+              'D')
+            OnChange = DBRGOclIncChange
+          end
+          object DBRGMoPreMo: TDBRadioGroup
+            Left = 11
+            Top = 82
+            Width = 255
+            Height = 34
+            Columns = 3
+            DataField = 'Molar_PreMolar'
+            DataSource = DataSourceServicos
+            Enabled = False
+            Items.Strings = (
+              '&Ambos'
+              '&Molar'
+              '&Pr'#233' Molar')
+            TabOrder = 2
+            Values.Strings = (
+              'A'
+              'M'
+              'P')
+          end
+        end
+        object GroupBox1: TGroupBox
+          Left = 7
+          Top = 346
+          Width = 274
+          Height = 51
+          Caption = 'Idade M'#225'xima Permitida'
+          TabOrder = 1
+          object Label5: TLabel
+            Left = 66
+            Top = 23
+            Width = 69
+            Height = 13
+            Caption = 'Anos de Idade'
+          end
+          object DBEdit6: TDBEdit
+            Left = 8
+            Top = 20
+            Width = 51
+            Height = 21
+            Hint = 'Zero(0) indica que n'#227'o h'#225' limites de idade'
+            DataField = 'idadeMax'
+            DataSource = DataSourceServicos
+            TabOrder = 0
+          end
+        end
+        object DBRHemiArco: TDBRadioGroup
+          Left = 10
+          Top = 223
+          Width = 271
+          Height = 69
+          Caption = 'Hemi-Arco'
+          Columns = 3
+          DataField = 'Hemiarco'
+          DataSource = DataSourceServicos
+          Enabled = False
+          Items.Strings = (
+            'Sup &Direito'
+            'Sup &Esquerdo'
+            '&Inf Direito'
+            'In&f Esquerdo'
+            '&Todos')
+          TabOrder = 2
+          TabStop = True
+          Values.Strings = (
+            'SD'
+            'SE'
+            'ID'
+            'IE'
+            'TD')
+          OnChange = DBRGServExecEmChange
+        end
+        object GroupBox2: TGroupBox
+          Left = 7
+          Top = 400
+          Width = 273
+          Height = 51
+          Caption = 'Qtde de servi'#231'o por Or'#231'amento'
+          TabOrder = 3
+          object Label6: TLabel
+            Left = 10
+            Top = 23
+            Width = 43
+            Height = 13
+            Caption = 'Permitido'
+          end
+          object Label7: TLabel
+            Left = 98
+            Top = 23
+            Width = 68
+            Height = 13
+            Caption = 'por or'#231'amento'
+          end
+          object DBEdit7: TDBEdit
+            Left = 59
+            Top = 19
+            Width = 35
+            Height = 21
+            Hint = 
+              'Informe a qtde deste mesmo servi'#231'o que pode conter um or'#231'amento(' +
+              'Zero indica sem limite de qtde)'
+            DataField = 'qt_orcamento'
+            DataSource = DataSourceServicos
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 0
+          end
+        end
+        object DBRGArcada: TDBRadioGroup
+          Left = 10
+          Top = 294
+          Width = 271
+          Height = 48
+          Caption = 'Arcada'
+          Columns = 3
+          DataField = 'arcada'
+          DataSource = DataSourceServicos
+          Enabled = False
+          Items.Strings = (
+            '&Ambas'
+            'Arcada &Sup'
+            'Arcada &Inf')
+          TabOrder = 4
+          TabStop = True
+          Values.Strings = (
+            'AM'
+            'AS'
+            'AI')
+          OnChange = DBRGServExecEmChange
+        end
+        object DBRGServExecEm: TDBRadioGroup
+          Left = 9
+          Top = 1
+          Width = 272
+          Height = 63
+          Caption = 'Local de execu'#231#227'o do Servi'#231'o'
+          Columns = 3
+          DataField = 'cd_nivel_servico'
+          DataSource = DataSourceServicos
+          Items.Strings = (
+            '&Cliente(Boca)'
+            '&Dente'
+            '&Face'
+            '&Hemi-arco'
+            '&Sexante'
+            '&Arcada')
+          TabOrder = 5
+          TabStop = True
+          Values.Strings = (
+            'C'
+            'D'
+            'F'
+            'H'
+            'S'
+            'A')
+          OnChange = DBRGServExecEmChange
+        end
+        object BitBtnLimFace: TBitBtn
+          Left = 12
+          Top = 66
+          Width = 269
+          Height = 24
+          Hint = 
+            'Clique aqui se voc'#234' deseja limitar as faces onde este servi'#231'o po' +
+            'de ser executado'
+          Caption = '&Delimitar Faces'
+          Enabled = False
+          ParentShowHint = False
+          ShowHint = True
+          TabOrder = 6
+          OnClick = BitBtnLimFaceClick
+        end
+        object DBEdit5: TDBEdit
+          Left = 151
+          Top = 16
+          Width = 34
+          Height = 21
+          DataField = 'qt_face'
+          DataSource = DataSourceServicos
+          TabOrder = 7
+          Visible = False
+        end
+        object DBCheckBox2: TDBCheckBox
+          Left = 16
+          Top = 509
+          Width = 193
+          Height = 17
+          Caption = 'Servi'#231'o de Manuten'#231#227'o autom'#225'tica'
+          DataField = 'manutencaoAutomatica'
+          DataSource = DataSourceServicos
+          TabOrder = 8
+          ValueChecked = 'True'
+          ValueUnchecked = 'False'
+        end
+        object DBCheckBox3: TDBCheckBox
+          Left = 16
+          Top = 534
+          Width = 193
+          Height = 17
+          Caption = 'Habilita via de Ortodontia'
+          DataField = 'habilitaViaOrtodontia'
+          DataSource = DataSourceServicos
+          TabOrder = 9
+          ValueChecked = 'True'
+          ValueUnchecked = 'False'
+        end
+        object GroupBox3: TGroupBox
+          Left = 7
+          Top = 451
+          Width = 273
+          Height = 51
+          Caption = 'Qtde de Vezes TISS/SIP'
+          TabOrder = 10
+          object Label13: TLabel
+            Left = 10
+            Top = 22
+            Width = 68
+            Height = 13
+            Caption = 'Multiplicar por '
+          end
+          object Label14: TLabel
+            Left = 121
+            Top = 21
+            Width = 99
+            Height = 13
+            Caption = 'para envio TISS/SIP'
+          end
+          object DBEdit12: TDBEdit
+            Left = 81
+            Top = 19
+            Width = 35
+            Height = 21
+            Hint = 
+              'Informe a qtde deste mesmo servi'#231'o que pode conter um or'#231'amento(' +
+              'Zero indica sem limite de qtde)'
+            DataField = 'qtVezesTISS'
+            DataSource = DataSourceServicos
+            ParentShowHint = False
+            ShowHint = True
+            TabOrder = 0
+          end
+        end
+      end
+      object Panel2: TPanel
+        Left = 0
+        Top = 0
+        Width = 505
+        Height = 551
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 1
+        object DBGridServicos: TDBGrid
+          Left = 0
+          Top = 128
+          Width = 505
+          Height = 408
+          Align = alClient
+          Color = clInfoBk
+          DataSource = DataSourceServicos
+          TabOrder = 0
+          TitleFont.Charset = DEFAULT_CHARSET
+          TitleFont.Color = clWindowText
+          TitleFont.Height = -11
+          TitleFont.Name = 'MS Sans Serif'
+          TitleFont.Style = []
+          Columns = <
+            item
+              Expanded = False
+              FieldName = 'Codigo'
+              Title.Caption = 'C'#243'digo'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clBlack
+              Title.Font.Height = -11
+              Title.Font.Name = 'MS Sans Serif'
+              Title.Font.Style = []
+              Width = 52
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'Descricao'
+              Title.Caption = 'Descri'#231#227'o'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clBlack
+              Title.Font.Height = -11
+              Title.Font.Name = 'MS Sans Serif'
+              Title.Font.Style = []
+              Width = 236
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'Categoria'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clBlack
+              Title.Font.Height = -11
+              Title.Font.Name = 'MS Sans Serif'
+              Title.Font.Style = []
+              Width = 61
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'Sip'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clBlack
+              Title.Font.Height = -11
+              Title.Font.Name = 'MS Sans Serif'
+              Title.Font.Style = []
+              Width = 47
+              Visible = True
+            end
+            item
+              Alignment = taCenter
+              Expanded = False
+              FieldName = 'cd_nivel_servico'
+              Title.Caption = 'Nivel Servi'#231'o'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clBlack
+              Title.Font.Height = -11
+              Title.Font.Name = 'MS Sans Serif'
+              Title.Font.Style = []
+              Width = 83
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'tipo_dente'
+              Title.Caption = 'Tipo'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clBlack
+              Title.Font.Height = -11
+              Title.Font.Name = 'MS Sans Serif'
+              Title.Font.Style = []
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'qt_face'
+              Title.Caption = 'Qt Face'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clBlack
+              Title.Font.Height = -11
+              Title.Font.Name = 'MS Sans Serif'
+              Title.Font.Style = []
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'Perm_deci'
+              Title.Caption = 'Perm/Deci'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clBlack
+              Title.Font.Height = -11
+              Title.Font.Name = 'MS Sans Serif'
+              Title.Font.Style = []
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'IdadeMax'
+              Title.Caption = 'Idade Max'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clBlack
+              Title.Font.Height = -11
+              Title.Font.Name = 'MS Sans Serif'
+              Title.Font.Style = []
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'Hemiarco'
+              Title.Caption = 'Hemi-arco'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clBlack
+              Title.Font.Height = -11
+              Title.Font.Name = 'MS Sans Serif'
+              Title.Font.Style = []
+              Visible = True
+            end
+            item
+              Expanded = False
+              FieldName = 'qt_orcamento'
+              Title.Caption = 'Qt Or'#231'amento'
+              Title.Font.Charset = DEFAULT_CHARSET
+              Title.Font.Color = clBlack
+              Title.Font.Height = -11
+              Title.Font.Name = 'MS Sans Serif'
+              Title.Font.Style = []
+              Visible = True
+            end>
+        end
+        object Panel3: TPanel
+          Left = 0
+          Top = 0
+          Width = 505
+          Height = 128
+          Align = alTop
+          BevelOuter = bvNone
+          TabOrder = 1
+          object Label1: TLabel
+            Left = 5
+            Top = 6
+            Width = 33
+            Height = 13
+            Caption = 'Codigo'
+            FocusControl = DBEdit1
+          end
+          object Label2: TLabel
+            Left = 73
+            Top = 6
+            Width = 48
+            Height = 13
+            Caption = 'Descricao'
+            FocusControl = DBEdit2
+          end
+          object Label3: TLabel
+            Left = 341
+            Top = 6
+            Width = 45
+            Height = 13
+            Caption = 'Categoria'
+            FocusControl = DBEdit3
+          end
+          object Label4: TLabel
+            Left = 399
+            Top = 6
+            Width = 15
+            Height = 13
+            Caption = 'Sip'
+            FocusControl = DBEdit4
+          end
+          object Label8: TLabel
+            Left = 5
+            Top = 48
+            Width = 29
+            Height = 13
+            Caption = '&Grupo'
+            FocusControl = DBEdit1
+          end
+          object SpeedButtonLimpaGrupo: TSpeedButton
+            Left = 207
+            Top = 65
+            Width = 23
+            Height = 17
+            Hint = 'Retira grupo'
+            Glyph.Data = {
+              76010000424D7601000000000000760000002800000020000000100000000100
+              04000000000000010000120B0000120B00001000000000000000000000000000
+              800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00500005000555
+              555557777F777555F55500000000555055557777777755F75555005500055055
+              555577F5777F57555555005550055555555577FF577F5FF55555500550050055
+              5555577FF77577FF555555005050110555555577F757777FF555555505099910
+              555555FF75777777FF555005550999910555577F5F77777775F5500505509990
+              3055577F75F77777575F55005055090B030555775755777575755555555550B0
+              B03055555F555757575755550555550B0B335555755555757555555555555550
+              BBB35555F55555575F555550555555550BBB55575555555575F5555555555555
+              50BB555555555555575F555555555555550B5555555555555575}
+            NumGlyphs = 2
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = SpeedButtonLimpaGrupoClick
+          end
+          object Label11: TLabel
+            Left = 238
+            Top = 48
+            Width = 76
+            Height = 13
+            Caption = 'Data Inativa'#231#227'o'
+            FocusControl = DBEdit10
+          end
+          object SpeedButton1: TSpeedButton
+            Left = 340
+            Top = 64
+            Width = 23
+            Height = 17
+            Hint = 'Limpa data de inativa'#231#227'o'
+            Glyph.Data = {
+              76010000424D7601000000000000760000002800000020000000100000000100
+              04000000000000010000120B0000120B00001000000000000000000000000000
+              800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
+              FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00500005000555
+              555557777F777555F55500000000555055557777777755F75555005500055055
+              555577F5777F57555555005550055555555577FF577F5FF55555500550050055
+              5555577FF77577FF555555005050110555555577F757777FF555555505099910
+              555555FF75777777FF555005550999910555577F5F77777775F5500505509990
+              3055577F75F77777575F55005055090B030555775755777575755555555550B0
+              B03055555F555757575755550555550B0B335555755555757555555555555550
+              BBB35555F55555575F555550555555550BBB55575555555575F5555555555555
+              50BB555555555555575F555555555555550B5555555555555575}
+            NumGlyphs = 2
+            ParentShowHint = False
+            ShowHint = True
+            OnClick = SpeedButton1Click
+          end
+          object Label12: TLabel
+            Left = 7
+            Top = 88
+            Width = 29
+            Height = 13
+            Caption = 'TUSS'
+          end
+          object DBEdit1: TDBEdit
+            Left = 5
+            Top = 22
+            Width = 59
+            Height = 21
+            DataField = 'Codigo'
+            DataSource = DataSourceServicos
+            TabOrder = 0
+          end
+          object DBEdit2: TDBEdit
+            Left = 69
+            Top = 22
+            Width = 264
+            Height = 21
+            DataField = 'Descricao'
+            DataSource = DataSourceServicos
+            TabOrder = 1
+          end
+          object DBEdit3: TDBEdit
+            Left = 341
+            Top = 22
+            Width = 52
+            Height = 21
+            DataField = 'Categoria'
+            DataSource = DataSourceServicos
+            TabOrder = 2
+          end
+          object DBEdit4: TDBEdit
+            Left = 397
+            Top = 22
+            Width = 34
+            Height = 21
+            DataField = 'Sip'
+            DataSource = DataSourceServicos
+            TabOrder = 3
+          end
+          object DBLookupComboBox1: TDBLookupComboBox
+            Left = 4
+            Top = 64
+            Width = 200
+            Height = 21
+            DataField = 'cd_grupo'
+            DataSource = DataSourceServicos
+            KeyField = 'cd_grupo'
+            ListField = 'ds_grupo'
+            ListSource = DsGrupoServico
+            TabOrder = 4
+          end
+          object DBCheckBoxExtr: TDBCheckBox
+            Left = 368
+            Top = 64
+            Width = 65
+            Height = 17
+            Caption = '&Extra'#231#227'o'
+            DataField = 'extracao'
+            DataSource = DataSourceServicos
+            TabOrder = 5
+            ValueChecked = 'True'
+            ValueUnchecked = 'False'
+          end
+          object DBEdit10: TDBEdit
+            Left = 233
+            Top = 63
+            Width = 105
+            Height = 21
+            DataField = 'dt_exclusao'
+            DataSource = DataSourceServicos
+            TabOrder = 6
+          end
+          object DBEdit11: TDBEdit
+            Left = 5
+            Top = 101
+            Width = 100
+            Height = 21
+            DataField = 'cd_tuss'
+            DataSource = DataSourceServicos
+            TabOrder = 7
+          end
+          object DBCheckBox4: TDBCheckBox
+            Left = 112
+            Top = 103
+            Width = 150
+            Height = 17
+            Caption = '&Procedimento de Urg'#234'ncia'
+            DataField = 'lgUrgencia'
+            DataSource = DataSourceServicos
+            TabOrder = 8
+            ValueChecked = 'True'
+            ValueUnchecked = 'False'
+          end
+        end
+        object Panel5: TPanel
+          Left = 0
+          Top = 536
+          Width = 505
+          Height = 15
+          Align = alBottom
+          BevelOuter = bvNone
+          TabOrder = 2
+          object CheckBox1: TCheckBox
+            Left = 5
+            Top = 1
+            Width = 180
+            Height = 17
+            Caption = 'N'#227'o Mostrar servi'#231'os Exclu'#237'dos'
+            Checked = True
+            State = cbChecked
+            TabOrder = 0
+            OnClick = CheckBox1Click
+          end
+        end
+      end
+    end
+    object TabSheetGrupo: TTabSheet
+      Caption = '&Grupo De Servi'#231'o'
+      ImageIndex = 1
+      object DBGrid1: TDBGrid
+        Left = 0
+        Top = 81
+        Width = 730
+        Height = 368
+        Align = alClient
+        DataSource = DsGrupoServico
+        TabOrder = 0
+        TitleFont.Charset = DEFAULT_CHARSET
+        TitleFont.Color = clWindowText
+        TitleFont.Height = -11
+        TitleFont.Name = 'MS Sans Serif'
+        TitleFont.Style = []
+        Columns = <
+          item
+            Expanded = False
+            FieldName = 'cd_grupo'
+            Title.Caption = 'C'#243'digo'
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'ds_grupo'
+            Title.Caption = 'Descri'#231#227'o'
+            Width = 309
+            Visible = True
+          end
+          item
+            Expanded = False
+            FieldName = 'ativo'
+            Title.Caption = 'Grupo Ativo'
+            Visible = True
+          end>
+      end
+      object Panel4: TPanel
+        Left = 0
+        Top = 0
+        Width = 730
+        Height = 81
+        Align = alTop
+        BevelOuter = bvNone
+        TabOrder = 1
+        object Label9: TLabel
+          Left = 2
+          Top = 17
+          Width = 51
+          Height = 13
+          Caption = 'C'#243'd Grupo'
+          FocusControl = DBEdit8
+        end
+        object Label10: TLabel
+          Left = 74
+          Top = 17
+          Width = 97
+          Height = 13
+          Caption = 'Descri'#231#227'o Do Grupo'
+          FocusControl = DBEdit9
+        end
+        object DBEdit8: TDBEdit
+          Left = 2
+          Top = 33
+          Width = 64
+          Height = 21
+          DataField = 'cd_grupo'
+          DataSource = DsGrupoServico
+          TabOrder = 0
+        end
+        object DBEdit9: TDBEdit
+          Left = 74
+          Top = 33
+          Width = 184
+          Height = 21
+          CharCase = ecUpperCase
+          DataField = 'ds_grupo'
+          DataSource = DsGrupoServico
+          TabOrder = 1
+        end
+        object DBCheckBox1: TDBCheckBox
+          Left = 274
+          Top = 33
+          Width = 97
+          Height = 17
+          Caption = 'Grupo ativo'
+          DataField = 'ativo'
+          DataSource = DsGrupoServico
+          TabOrder = 2
+          ValueChecked = 'True'
+          ValueUnchecked = 'False'
+        end
+      end
+    end
+  end
+  object DataSourceServicos: TDataSource
+    DataSet = QueryServicos
+    Left = 184
+    Top = 198
+  end
+  object QueryServicos: TQuery
+    BeforePost = QueryServicosBeforePost
+    AfterPost = QueryServicosAfterPost
+    OnNewRecord = QueryServicosNewRecord
+    DatabaseName = 'Multi'
+    RequestLive = True
+    SQL.Strings = (
+      'select * from Servicos'
+      'where dt_exclusao is null'
+      'order by Codigo')
+    Left = 226
+    Top = 158
+    object QueryServicosCodigo: TIntegerField
+      FieldName = 'Codigo'
+      Origin = 'MULTI.Servicos.Codigo'
+    end
+    object QueryServicosDescricao: TStringField
+      FieldName = 'Descricao'
+      Origin = 'MULTI.Servicos.Descricao'
+      FixedChar = True
+      Size = 40
+    end
+    object QueryServicosCategoria: TIntegerField
+      FieldName = 'Categoria'
+      Origin = 'MULTI.Servicos.Categoria'
+    end
+    object QueryServicosSip: TIntegerField
+      FieldName = 'Sip'
+      Origin = 'MULTI.Servicos.Sip'
+    end
+    object QueryServicoscd_nivel_servico: TStringField
+      FieldName = 'cd_nivel_servico'
+      Origin = 'MULTI.Servicos.cd_nivel_servico'
+      FixedChar = True
+      Size = 1
+    end
+    object QueryServicosqt_face: TSmallintField
+      FieldName = 'qt_face'
+      Origin = 'MULTI.Servicos.qt_face'
+    end
+    object QueryServicostipo_dente: TStringField
+      FieldName = 'tipo_dente'
+      Size = 1
+    end
+    object QueryServicosPerm_deci: TStringField
+      FieldName = 'Perm_deci'
+      Origin = 'MULTI.Servicos.Perm_deci'
+      FixedChar = True
+      Size = 1
+    end
+    object QueryServicosIdadeMax: TSmallintField
+      FieldName = 'IdadeMax'
+      Origin = 'MULTI.Servicos.IdadeMax'
+    end
+    object QueryServicosHemiarco: TStringField
+      FieldName = 'Hemiarco'
+      Origin = 'MULTI.Servicos.Hemiarco'
+      Size = 2
+    end
+    object QueryServicosqt_orcamento: TSmallintField
+      FieldName = 'qt_orcamento'
+      Origin = 'MULTI.Servicos.qt_orcamento'
+    end
+    object QueryServicosmolar_preMolar: TStringField
+      FieldName = 'molar_preMolar'
+      Origin = 'MULTI.Servicos.molar_preMolar'
+      FixedChar = True
+      Size = 1
+    end
+    object QueryServicosarcada: TStringField
+      FieldName = 'arcada'
+      Origin = 'MULTI.Servicos.arcada'
+      FixedChar = True
+      Size = 2
+    end
+    object QueryServicoscd_grupo: TSmallintField
+      FieldName = 'cd_grupo'
+      Origin = 'MULTI.Servicos.cd_grupo'
+    end
+    object QueryServicosextracao: TBooleanField
+      FieldName = 'extracao'
+      Origin = 'MULTI.Servicos.extracao'
+    end
+    object QueryServicosdt_exclusao: TDateTimeField
+      FieldName = 'dt_exclusao'
+      Origin = 'MULTI.Servicos.dt_exclusao'
+      EditMask = '!99/99/0000;1;_'
+    end
+    object QueryServicoscd_tuss: TIntegerField
+      FieldName = 'cd_tuss'
+      Origin = 'MULTI.Servicos.cd_tuss'
+    end
+    object QueryServicosmanutencaoAutomatica: TBooleanField
+      FieldName = 'manutencaoAutomatica'
+      Origin = 'MULTI.Servicos.manutencaoAutomatica'
+    end
+    object QueryServicoshabilitaViaOrtodontia: TBooleanField
+      FieldName = 'habilitaViaOrtodontia'
+      Origin = 'MULTI.Servicos.habilitaViaOrtodontia'
+    end
+    object QueryServicoslgUrgencia: TBooleanField
+      FieldName = 'lgUrgencia'
+      Origin = 'MULTI.Servicos.lgUrgencia'
+    end
+    object QueryServicosqtVezesTISS: TSmallintField
+      FieldName = 'qtVezesTISS'
+      Origin = 'MULTI.Servicos.qtVezesTISS'
+    end
+  end
+  object QueryGrupoServico: TQuery
+    BeforePost = QueryGrupoServicoBeforePost
+    AfterPost = QueryGrupoServicoAfterPost
+    OnNewRecord = QueryGrupoServicoNewRecord
+    DatabaseName = 'Multi'
+    RequestLive = True
+    SQL.Strings = (
+      'select * from grupo_servico'
+      'order by cd_grupo')
+    Left = 314
+    Top = 150
+  end
+  object DsGrupoServico: TDataSource
+    DataSet = QueryGrupoServico
+    Left = 80
+    Top = 198
+  end
+end

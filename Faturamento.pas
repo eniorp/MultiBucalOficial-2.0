@@ -1,0 +1,390 @@
+unit Faturamento;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  Db, DBTables, StdCtrls, Buttons, DBCtrls, Grids, DBGrids, ExtCtrls, Mask,
+  ADODB;
+
+type
+  TFormFaturamento = class(TForm)
+    PanelGrid: TPanel;
+    Panel2: TPanel;
+    Panel3: TPanel;
+    DBGridFaturamento: TDBGrid;
+    Panel4: TPanel;
+    Panel5: TPanel;
+    DBNavigatorFaturamento: TDBNavigator;
+    BitBtn1: TBitBtn;
+    DataSourceFaturamento: TDataSource;
+    QueryContratante: TQuery;
+    QueryTipoDocumento: TQuery;
+    QueryTipoCobranca: TQuery;
+    Label1: TLabel;
+    DBEditCodigoContratante: TDBEdit;
+    Label2: TLabel;
+    Label5: TLabel;
+    DBLookupComboBoxTipo: TDBLookupComboBox;
+    Label6: TLabel;
+    DBEditNumero: TDBEdit;
+    Label7: TLabel;
+    DBComboBoxDesdobramento: TDBComboBox;
+    Label8: TLabel;
+    DBEditEmissao: TDBEdit;
+    Label9: TLabel;
+    DBEditVencimento: TDBEdit;
+    Label10: TLabel;
+    DBEditValor: TDBEdit;
+    Label11: TLabel;
+    DBLookupComboBoxCobranca: TDBLookupComboBox;
+    DataSourceTipoDocumento: TDataSource;
+    DataSourceTipoCobranca: TDataSource;
+    QueryContratanteCodigo: TIntegerField;
+    QueryContratanteNome: TStringField;
+    QueryContratanteAuxiliar: TQuery;
+    QueryFaturamento: TQuery;
+    QueryFaturamentoNumero_Titulo: TIntegerField;
+    QueryFaturamentoDesdobramento: TStringField;
+    QueryFaturamentoCodigo_Contratante: TIntegerField;
+    QueryFaturamentoData_Emissao: TDateTimeField;
+    QueryFaturamentoData_Vencimento: TDateTimeField;
+    QueryFaturamentoValor: TFloatField;
+    QueryFaturamentoNumero_Banco: TStringField;
+    QueryFaturamentoExportado_Receber: TBooleanField;
+    QueryFaturamentoEmitido_Documento: TBooleanField;
+    QueryFaturamentoDescricao_Documento: TStringField;
+    QueryFaturamentoDescricao_Cobranca: TStringField;
+    DataSourceContratante: TDataSource;
+    EditNomeContratante: TEdit;
+    DataSourceContratanteAuxiliar: TDataSource;
+    QueryFaturamentoNome: TStringField;
+    QueryContratanteAuxiliarCodigo: TIntegerField;
+    QueryContratanteAuxiliarNome: TStringField;
+    QueryTipoDocumentoCodigo: TIntegerField;
+    QueryTipoDocumentoDescricao: TStringField;
+    QueryTipoCobrancaCodigo: TIntegerField;
+    QueryTipoCobrancaDescricao: TStringField;
+    QueryTipoCobrancaGera_Receber: TBooleanField;
+    QueryFaturamentoTipo_Documento: TIntegerField;
+    QueryFaturamentoTipo_Cobranca: TIntegerField;
+    BitBtnPesquisar: TBitBtn;
+    EditPesquisa: TEdit;
+    DBCheckBox1: TDBCheckBox;
+    DBCheckBox2: TDBCheckBox;
+    GroupBox1: TGroupBox;
+    QueryFaturamentoAlteracao_Cobranca: TBooleanField;
+    QueryFaturamentoAlteracao_Valor: TBooleanField;
+    QueryFaturamentoOrcamento: TIntegerField;
+    QueryFaturamentoCodigo_Usuario: TIntegerField;
+    QueryFaturamentoCidade: TStringField;
+    QueryFaturamentoParcela: TIntegerField;
+    QueryFaturamentoTipo_Pagamento: TIntegerField;
+    QueryFaturamentodtinclusao: TDateTimeField;
+    QueryFaturamentoempresa: TBooleanField;
+    QueryFaturamentoseq_periodo_fat: TIntegerField;
+    RadioGroupTp: TRadioGroup;
+    Label12: TLabel;
+    EditCdContr: TEdit;
+    BitBtn2: TBitBtn;
+    Edit2: TEdit;
+    Label14: TLabel;
+    DBLookupComboBox1: TDBLookupComboBox;
+    Label13: TLabel;
+    ComboBoxTpDoc: TComboBox;
+    GroupBox2: TGroupBox;
+    Label3: TLabel;
+    Label4: TLabel;
+    MaskEditDtIni: TMaskEdit;
+    MaskEditDtFim: TMaskEdit;
+    BitBtn3: TBitBtn;
+    QueryFaturamentovr_complemento: TFloatField;
+    Label15: TLabel;
+    DBCheckBox3: TDBCheckBox;
+    Bevel1: TBevel;
+    QueryFaturamentolg_cobraJuros: TBooleanField;
+    QueryFaturamentomensagem1: TStringField;
+    QueryFaturamentomensagem2: TStringField;
+    QueryFaturamentomensagem3: TStringField;
+    Label16: TLabel;
+    DBEdit1: TDBEdit;
+    Label17: TLabel;
+    DBEdit2: TDBEdit;
+    Label18: TLabel;
+    DBEdit3: TDBEdit;
+    procedure FormCreate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure DBEditCodigoContratanteExit(Sender: TObject);
+    procedure DBEditCodigoContratanteKeyDown(Sender: TObject;
+      var Key: Word; Shift: TShiftState);
+    procedure DataSourceFaturamentoDataChange(Sender: TObject;
+      Field: TField);
+    procedure QueryFaturamentoAfterInsert(DataSet: TDataSet);
+    procedure QueryFaturamentoAfterPost(DataSet: TDataSet);
+    procedure BitBtnPesquisarClick(Sender: TObject);
+    procedure EditPesquisaKeyPress(Sender: TObject; var Key: Char);
+    procedure EditPesquisaExit(Sender: TObject);
+    procedure BitBtn3Click(Sender: TObject);
+    procedure BitBtn2Click(Sender: TObject);
+    procedure EditCdContrExit(Sender: TObject);
+    procedure QueryFaturamentoBeforePost(DataSet: TDataSet);
+    procedure FormKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+  private
+      VSeqPFat : string[10];
+  public
+    { Public declarations }
+  end;
+
+var
+  FormFaturamento: TFormFaturamento;
+  Salva_Ponteiro : Integer;
+
+implementation
+
+{$R *.DFM}
+
+uses GeraReceber, Seletor, PesquisaContratante, udm;
+
+procedure TFormFaturamento.FormCreate(Sender: TObject);
+begin
+   RadioGroupTp.ItemIndex := FormGeraReceber.RadioGroupTp.ItemIndex;
+   QueryContratante.Open;
+   QueryContratanteAuxiliar.Open;
+   QueryTipoDocumento.Open;
+   QueryTipoCobranca.Open;
+   if (FormGeraReceber.EditAno.Text <> '') and (FormGeraReceber.EditInicial.Text <> '') and (FormGeraReceber.EditMes.Text <> '') and (FormGeraReceber.EditFinal.Text <> '') then
+   begin
+      MaskEditDtIni.text := DateToStr(EncodeDate(StrToInt(FormGeraReceber.EditAno.Text), StrToInt(GeraREceber.FormGeraReceber.EditMes.Text), FormGeraReceber.VerifDia(StrToInt(FormGeraReceber.EditInicial.Text),FormGeraReceber.EditMes.text,FormGeraReceber.EditAno.text)));
+      MaskEditDtFim.text := DateToStr(EncodeDate(StrToInt(FormGeraReceber.EditAno.Text), StrToInt(GeraREceber.FormGeraReceber.EditMes.Text), FormGeraReceber.VerifDia(StrToInt(FormGeraReceber.EditFinal.Text)  ,FormGeraReceber.EditMes.Text,FormGeraReceber.EditAno.Text)));
+   end;
+   if GeraReceber.Desdobr <> '' then
+   begin
+      case GeraReceber.Desdobr[1] of
+
+         'T': ComboBoxTpDoc.ItemIndex := 0;
+         'M': ComboBoxTpDoc.ItemIndex := 1;
+         'O': ComboBoxTpDoc.ItemIndex := 2;
+         'A': ComboBoxTpDoc.ItemIndex := 3;
+
+     end;
+   end;
+
+   with QueryFaturamento do
+   begin
+      close;
+      SQL[1] := 'where Data_Vencimento between :Vencimento and :Vencimento2';
+      Params[0].DataType := ftDateTime;
+      Params[0].ParamType := ptInput;
+      Params[1].DataType := ftDateTime;
+      Params[1].ParamType := ptInput;
+   end;
+
+   FormFaturamento.tag := 1;
+   BitBtn3Click(Sender);
+   FormFaturamento.tag := 0;
+end;
+
+procedure TFormFaturamento.FormClose(Sender: TObject;
+  var Action: TCloseAction);
+begin
+     QueryContratante.Close;
+     QueryContratanteAuxiliar.Close;
+     QueryTipoDocumento.Close;
+     QueryTipoCobranca.Close;
+     QueryFaturamento.Close;
+end;
+
+procedure TFormFaturamento.DBEditCodigoContratanteExit(Sender: TObject);
+begin
+
+     if not QueryFaturamento.Active then exit;
+        with QueryContratanteAuxiliar do
+           begin
+               DisableControls;
+               Salva_Ponteiro := QueryFaturamentoCodigo_Contratante.asInteger;
+               Close;
+               SQL[1] := 'where Codigo = :Codigo_Contrato';
+               Params[0].DataType := ftInteger;
+               Params[0].ParamType := ptInput;
+               ParamByName('Codigo_Contrato').asInteger := Salva_Ponteiro;
+               Open;
+               EnableControls;
+               if RecordCount = 0 then
+                  begin
+                    ShowMessage('Contratante Não Cadastrado !!!');
+                    DBEditCodigoContratante.SetFocus;
+                    exit;
+                  end
+               else
+                    EditNomeContratante.Text := QueryContratanteAuxiliarNome.asString;
+           end;
+end;
+
+procedure TFormFaturamento.DBEditCodigoContratanteKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+begin
+     case Key of
+          VK_RETURN, VK_DOWN: Perform(WM_NEXTDLGCTL, 0, 0);
+          VK_UP: Perform(WM_NEXTDLGCTL, 1, 0);
+     end;
+end;
+
+procedure TFormFaturamento.DataSourceFaturamentoDataChange(Sender: TObject;
+  Field: TField);
+begin
+     if QueryFaturamentoCodigo_Contratante.asString = '' then exit;
+
+     with QueryContratanteAuxiliar do
+       begin
+         Close;
+         SQL[1] := ('where Codigo = ' + QueryFaturamentoCodigo_Contratante.asString);
+         Open;
+       end;
+
+     EditNomeContratante.Text := QueryContratanteAuxiliarNome.asString;
+end;
+
+procedure TFormFaturamento.QueryFaturamentoAfterInsert(DataSet: TDataSet);
+begin
+     DBEditCodigoContratante.SetFocus;
+     EditNomeContratante.Text := '';
+     QueryFaturamentoEmitido_Documento.AsBoolean := false;
+     QueryFaturamentoExportado_Receber.AsBoolean := false;
+end;
+
+procedure TFormFaturamento.QueryFaturamentoAfterPost(DataSet: TDataSet);
+var Year,Month,Day : word;
+
+begin
+     with QueryFaturamento do
+        begin
+           DBGridFaturamento.DataSource := Nil;
+           DisableControls;
+           Salva_Ponteiro := QueryFaturamentoNumero_Titulo.asInteger;
+           Close;
+           QueryContratanteAuxiliar.Close;
+           QueryContratanteAuxiliar.Open;
+           Open;
+           Locate('Numero_Titulo', Salva_Ponteiro, []);
+           EnableControls;
+           DBGridFaturamento.DataSource := DataSourceFaturamento;
+        end;
+   FormGeraReceber.PAtualizaPeriodoFat(VSeqPFat);
+   FormGeraReceber.PAtualizaEventoFat(1,0); // atualiza o evento processado para Efetivado
+   if QueryFaturamentoEmitido_Documento.AsBoolean = true then
+   begin
+      //completar PAtualizaEventFatFull
+      Decodedate(QueryFaturamentoData_Vencimento.AsDateTime,year,Month,Day);
+      FormGeraReceber.PAtualizaEventFatFull(QueryFaturamentoCodigo_Contratante.AsString,QueryFaturamentotipo_cobranca.Asinteger ,Day);
+   end;
+
+end;
+
+procedure TFormFaturamento.BitBtnPesquisarClick(Sender: TObject);
+begin
+     EditPesquisa.Visible := True;
+     EditPesquisa.SetFocus;
+end;
+
+procedure TFormFaturamento.EditPesquisaKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+     if not (key in ['0'..'9', #13, #8]) then
+        key := #0;
+end;
+
+procedure TFormFaturamento.EditPesquisaExit(Sender: TObject);
+begin
+     if not QueryFaturamento.Locate('Codigo_Contratante', EditPesquisa.Text, [loCaseInsensitive]) then
+        ShowMessage('Título Não Encontrado !!!');
+     EditPesquisa.Visible := False;
+end;
+
+procedure TFormFaturamento.BitBtn3Click(Sender: TObject);
+begin
+   if MaskEditDtIni.text = '  /  /    ' then
+      MaskEditDtIni.text := '01/01/1900';
+   if MaskEditDtFim.text = '  /  /    ' then
+      MaskEditDtFim.text := dm.GetDataSrv;
+      
+   if ComboBoxTpDoc.ItemIndex = -1 then
+   begin
+     if FormFaturamento.tag = 0 then
+        ShowMessage('É necessário informar o tipo de documento !');
+      exit;
+   end;
+   QueryFaturamento.ParamByName('Vencimento').asDateTime := StrToDate(MaskEditDtIni.text);
+   QueryFaturamento.ParamByName('Vencimento2').asDateTime := StrToDate(MaskEditDtFim.text);
+
+   case ComboBoxTpDoc.ItemIndex of
+      0 : QueryFaturamento.ParamByName('Desdobramento').asString := 'T';
+      1 : QueryFaturamento.ParamByName('Desdobramento').asString := 'M';
+      2 : QueryFaturamento.ParamByName('Desdobramento').asString := 'O';
+      3 : QueryFaturamento.ParamByName('Desdobramento').asString := 'A';
+      4 : QueryFaturamento.ParamByName('Desdobramento').asString := 'M';
+   end;
+   QueryFaturamento.sql[3] := '';
+   if EditCdContr.Text <> '' then
+      QueryFaturamento.sql[3] := QueryFaturamento.sql[3] + ' and codigo_contratante = ' + EditCdcontr.text;
+   if DBLookupComboBox1.Text <> '' then
+      QueryFaturamento.sql[3] := QueryFaturamento.sql[3] + ' and tipo_cobranca = ' + QueryTipoCobrancaCodigo.AsString;
+
+   case RadioGroupTp.ItemIndex of
+   
+       0 : QueryFaturamento.sql[3] := QueryFaturamento.sql[3] + ' and empresa = 1';
+       1 : QueryFaturamento.sql[3] := QueryFaturamento.sql[3] + ' and empresa = 0';
+   end;
+
+   if ComboBoxTpDoc.ItemIndex = 4 then // tipod de documento = 26 refere-se a títulos de desconto em folha
+      QueryFaturamento.sql[3] := QueryFaturamento.sql[3] + ' and tipo_documento = 26 ';
+   QueryFaturamento.sql[3] := QueryFaturamento.sql[3] + ' order by Data_Vencimento, Codigo_Contratante';
+   QueryFaturamento.open;
+   FormFaturamento.Caption :=  ' Registro do faturamento - Quantidade de Registros ==> ' + inttostr(QueryFaturamento.RecordCount);
+end;
+
+procedure TFormFaturamento.BitBtn2Click(Sender: TObject);
+begin
+   FormPesquisaContratante := TFormPesquisaContratante.create(self);
+   FormPesquisaContratante.ShowModal;
+   EditCdContr.Text := FormPesquisaContratante.QueryContratanteCodigo.AsString;
+   Edit2.text := FormPesquisaContratante.QueryContratanteNome.AsString;
+   EditCdContr.SetFocus;
+   FormPesquisaContratante.free;
+end;
+
+procedure TFormFaturamento.EditCdContrExit(Sender: TObject);
+begin
+   if (EditCdContr.text <> '') then
+   begin
+      if (Edit2.Text = '') then
+         Edit2.Text := dm.execmd('select nome n from contratante where codigo = ' + EditCdContr.text,'n');
+   end
+   else
+      Edit2.text := '';
+end;
+
+procedure TFormFaturamento.QueryFaturamentoBeforePost(DataSet: TDataSet);
+var Year,Month,Day : word;
+begin
+   if QueryFaturamento.State = DsInsert then
+   begin
+      Decodedate(QueryFaturamentoData_Vencimento.AsDateTime,year,Month,Day);
+      FormGeraReceber.PIncluiPeriodoFat(year,month,QueryFaturamentoData_Emissao.AsString,'TODOS',2,Day,Day,QueryFaturamentoCodigo_Contratante.AsInteger ,QueryFaturamentoDesdobramento.AsString[1]);
+      QueryFaturamentoseq_periodo_fat.AsInteger := FormGeraReceber.ADOQueryPeriodoFat.FieldByName('seq_periodo_fat').AsInteger;
+   end;
+   VSeqPFat := QueryFaturamentoseq_periodo_fat.AsString;
+end;
+
+procedure TFormFaturamento.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+     case Key of
+          VK_RETURN, VK_DOWN: Perform(WM_NEXTDLGCTL, 0, 0);
+          VK_UP: Perform(WM_NEXTDLGCTL, 1, 0);
+     end;
+
+end;
+
+end.
+

@@ -1,0 +1,275 @@
+{*********************************************************}
+{*                  GUTENBERG.PAS 1.00                   *}
+{*         Copyright (c) 1997 D'ARTE Sistemas            *}
+{*           Author: Pedro Jorge P. Silveira             *}
+{*                   All rights reserved.                *}
+{*********************************************************}
+
+unit Gutenberg;
+  { Unit for TGutenberg Class. }
+
+interface
+
+uses Windows, WinSpool, SysUtils;
+
+const GutenbergStr : Array[0..5] of String = ('Invalid printer name',
+                                              'New document not spooled',
+                                              'Error closing the document',
+                                              'Error closing the printer',
+                                              'Error starting a new page',
+                                              'Error writing to the printer');
+
+      geInvalidPrinter      = 0; // Gutenberg Errors ( GutenbergStr index )
+      geDocumentNotSpooled  = 1;
+      geDocumentNotClosed   = 2;
+      gePrinterNotClosed    = 3;
+      gePageNotStarted      = 4;
+      geErrorWriting        = 5;
+
+      gcFormFeed = #12;          // Gutenberg Commands
+      gcLineFeed = #10;
+      gcReturn   = #13;
+
+type EGutenbergError = class (Exception);
+
+     TGtbFilter = (gfNone,gfConvert);
+
+     TGutenberg = class
+     private
+       { Private Declarations }
+       fPrinterHandle : THandle;
+       fPrinterName,
+       fDocument      : String;
+       fPrintJobId    : DWord;
+       fFilter        : TGtbFilter;
+       fBeforeMask,
+       fAfterMask     : String;
+       fRow,
+       fCol           : Integer;
+       function WriteToPrinter (const _Data : String) : Boolean;
+       function Replica (const _Char : AnsiChar; const _Length : Integer) : String;
+       function GetReady (const _Data : String) : String;
+     protected
+       { Protected Declarations }
+       procedure SetfRow (const _Row : Integer);
+       procedure SetfCol (const _Col : Integer);
+     published
+       { Published Declarations }
+     public
+       { Public Declarations }
+       constructor Create (const _PrinterName, _Document : String);
+       destructor Destroy; override;
+       procedure SetPos (const _Row, _Col : Integer);
+       procedure Eject;
+       function SetFilterMasks (const _Before, _After : String) : Boolean;
+       procedure GWritePos (const _Row, _Col : Integer; const _Data : String);
+       procedure GWrite (const _Data : String);
+       procedure GWriteLnPos (const _Row, _Col : Integer; const _Data : String);
+       procedure GWriteLn (const _Data : String);
+       procedure SendControls (const _Data : String);
+       property PrinterName : String read fPrinterName;
+       property Document    : String read fDocument;
+       property Filter      : TGtbFilter read fFilter write fFilter;
+       property Row         : Integer read fRow write SetfRow;
+       property Col         : Integer read fCol write SetfCol;
+     end;
+
+implementation
+
+uses Printers, Dialogs;
+
+{ Public }
+
+constructor TGutenberg.Create (const _PrinterName, _Document : String);
+var DocInfo       : TDocInfo1;
+    PrinterNameOk : String;
+begin
+  inherited Create;
+  PrinterNameOk:=_PrinterName;
+  if (_PrinterName = '') and (Printer.Printers.Count > 0) then
+    PrinterNameOk:=Printer.Printers[Printer.PrinterIndex];
+  { Delete the unnecessary portion of the printer name }
+  System.Delete (PrinterNameOk,Pos (' on ',PrinterNameOk),Length (PrinterNameOk));
+  if OpenPrinter (PChar (PrinterNameOk),fPrinterHandle,nil) then
+  begin
+    { Build a new empty Print Job. }
+    DocInfo.pDocName:=PChar (_Document);
+    DocInfo.pOutputFile:=nil;
+    DocInfo.pDatatype:='RAW';
+    fPrintJobId:=StartDocPrinter (fPrinterHandle,1,@DocInfo);
+    if fPrintJobId <> 0 then
+    begin
+      if StartPagePrinter (fPrinterHandle) then
+      begin
+        fPrinterName:=PrinterNameOk;
+        fDocument:=_Document;
+        fFilter:=gfNone;
+        fBeforeMask:='';
+        fAfterMask:='';
+        fRow:=1;
+        fCol:=1;
+      end
+      else
+        raise EGutenbergError.Create (GutenbergStr[gePageNotStarted]);
+    end
+    else
+      raise EGutenbergError.Create (GutenbergStr[geDocumentNotSpooled] + ': ' + _Document);
+  end
+  else
+    raise EGutenbergError.Create (GutenbergStr[geInvalidPrinter] + ': ' + PrinterNameOk);
+end;
+
+destructor TGutenberg.Destroy;
+begin
+  if not EndDocPrinter (fPrinterHandle) then
+    raise EGutenbergError.Create (GutenbergStr[geDocumentNotClosed] + ': ' + Document);
+  if not ClosePrinter (fPrinterHandle) then
+    raise EGutenbergError.Create (GutenbergStr[gePrinterNotClosed] + ': ' + PrinterName);
+  inherited Destroy;
+end;
+
+procedure TGutenberg.SetPos (const _Row, _Col : Integer);
+begin
+  Row:=_Row;
+  Col:=_Col;
+end;
+
+procedure TGutenberg.Eject;
+begin
+  if Row = 1 then
+    Row:=Row + 1;
+  Row:=1;
+end;
+
+function TGutenberg.SetFilterMasks (const _Before, _After : String) : Boolean;
+begin
+  Result:=Length (_Before) = Length (_After);
+  if Result then
+  begin
+    fBeforeMask:=_Before;
+    fAfterMask:=_After;
+  end;
+end;
+
+procedure TGutenberg.GWritePos (const _Row, _Col : Integer; const _Data : String);
+begin
+  SetPos (_Row,_Col);
+  GWrite (_Data);
+end;
+
+procedure TGutenberg.GWrite (const _Data : String);
+var DataOk : String;
+begin
+  DataOk:=GetReady (_Data);
+  WriteToPrinter (DataOk);
+  fCol:=fCol + Length (DataOk);
+end;
+
+procedure TGutenberg.GWriteLnPos (const _Row, _Col : Integer; const _Data : String);
+begin
+  SetPos (_Row,_Col);
+  GWriteLn (_Data);
+end;
+
+procedure TGutenberg.GWriteLn (const _Data : String);
+begin
+  GWrite (_Data);
+  Row:=Row + 1;
+end;
+
+procedure TGutenberg.SendControls (const _Data : String);
+begin
+  WriteToPrinter (_Data);
+end;
+
+{ Published }
+
+{ Protected }
+
+procedure TGutenberg.SetfRow (const _Row : Integer);
+var NewRow : Integer;
+begin
+  if _Row >= 1 then
+    NewRow:=_Row
+  else
+    NewRow:=1;
+  if fRow <> NewRow then
+  begin
+    if NewRow < fRow then
+    begin
+      if EndPagePrinter (fPrinterHandle) then
+        WriteToPrinter (gcFormFeed + Replica (gcLineFeed,NewRow - 1))
+      else
+        raise EGutenbergError.Create (GutenbergStr[gePageNotStarted]);
+    end
+    else
+      WriteToPrinter (Replica (gcLineFeed,NewRow - fRow));
+    fRow:=NewRow;
+    fCol:=1; // LineFeed or FormFeed set column to 1.
+  end;
+end;
+
+procedure TGutenberg.SetfCol (const _Col : Integer);
+var NewCol : Integer;
+begin
+  if _Col >= 1 then
+    NewCol:=_Col
+  else
+    NewCol:=1;
+  if fCol <> NewCol then
+  begin
+    if NewCol < fCol then
+      WriteToPrinter (gcReturn + Replica (' ',NewCol - 1))
+    else
+      WriteToPrinter (Replica (' ',NewCol - fCol));
+    fCol:=NewCol;
+  end;
+end;
+
+{ Private }
+
+function TGutenberg.WriteToPrinter (const _Data : String) : Boolean;
+var BytesWritten : DWord;
+begin
+  Result:=False;
+  if WritePrinter (fPrinterHandle,PChar (_Data),Length (_Data),BytesWritten) then
+    Result:=BytesWritten = Length (_Data);
+  if not Result then
+    raise EGutenbergError.Create (GutenbergStr[geErrorWriting]);
+end;
+
+function TGutenberg.Replica (const _Char : AnsiChar; const _Length : Integer) : String;
+begin
+  SetLength (Result,_Length);
+  if _Length > 0 then
+  begin
+    FillChar (Result[1],_Length,_Char);
+  end;
+end;
+
+function Convert (const _Data, _BeforeMask, _AfterMask : String) : String;
+var StrInd,
+    StrPos  : Integer;
+begin
+  { Warning! Length (_BeforeMask) and Length (_AfterMask) must be equal.}
+  Result:=_Data;
+  if _BeforeMask <> '' then
+  begin
+    for StrInd:=1 to Length (Result) do
+    begin
+      StrPos:=Pos (Result[StrInd],_BeforeMask);
+      if StrPos > 0 then
+        Result[StrInd]:=_AfterMask[StrPos];
+    end;
+  end;
+end;
+
+function TGutenberg.GetReady (const _Data : String) : String;
+begin
+  if fFilter = gfConvert then
+    Result:=Convert (_Data,fBeforeMask,fAfterMask)
+  else
+    Result:=_Data;
+end;
+
+end.

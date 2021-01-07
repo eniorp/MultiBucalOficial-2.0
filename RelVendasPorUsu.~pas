@@ -1,0 +1,342 @@
+unit RelVendasPorUsu;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  RelPadrao, QRExport, Qrctrls, QuickRpt, ExtCtrls, Db, DBTables;
+
+type
+  TQrVendasPorUsu = class(TQuickReportPadrao)
+    QRLabelEmpresa: TQRLabel;
+    QrGroupRepr: TQRGroup;
+    QrGroupVend: TQRGroup;
+    QueryVendasUsu: TQuery;
+    QRLabelPeriodo: TQRLabel;
+    QRDBText1: TQRDBText;
+    QRDBText2: TQRDBText;
+    QRLabel4: TQRLabel;
+    QRDBText3: TQRDBText;
+    QRDBText4: TQRDBText;
+    QRLabel5: TQRLabel;
+    QRDBText10: TQRDBText;
+    QRBandGrpFooterVend: TQRBand;
+    QRBandGrfooterRep: TQRBand;
+    QRLabel6: TQRLabel;
+    QRLabel7: TQRLabel;
+    QRExpr1: TQRExpr;
+    QRExpr2: TQRExpr;
+    QRExpr4: TQRExpr;
+    QRBand1: TQRBand;
+    QRLabel10: TQRLabel;
+    QRLabel12: TQRLabel;
+    QRExpr5: TQRExpr;
+    QRLabelMedia: TQRLabel;
+    QRExpr6: TQRExpr;
+    QRDBText9: TQRDBText;
+    QRDBText11: TQRDBText;
+    QRDBText8: TQRDBText;
+    QRLabel11: TQRLabel;
+    QRDBText12: TQRDBText;
+    QRLabel9: TQRLabel;
+    QRDBText5: TQRDBText;
+    QRDBText6: TQRDBText;
+    QRDBText7: TQRDBText;
+    QRLabel8: TQRLabel;
+    QRLabel13: TQRLabel;
+    SpDesconto: TStoredProc;
+    QRLabelVr: TQRLabel;
+    QRLabelTotVend: TQRLabel;
+    QRLabelTotRep: TQRLabel;
+    QRLabelTot: TQRLabel;
+    QRLabelQtCancel: TQRLabel;
+    QRLabel3: TQRLabel;
+    QRLabel14: TQRLabel;
+    QRLabelQtAtivos: TQRLabel;
+    QRLabel15: TQRLabel;
+    QRLabelQtContrat: TQRLabel;
+    QRLabel16: TQRLabel;
+    QRLabelQtDebAut: TQRLabel;
+    QRLabel17: TQRLabel;
+    QRLabelVrAtivos: TQRLabel;
+    QRLabel18: TQRLabel;
+    QRLabel19: TQRLabel;
+    QRLabel20: TQRLabel;
+    QRExpr3: TQRExpr;
+    QRLabelTotCancel: TQRLabel;
+    QRLabel22: TQRLabel;
+    QRLabel23: TQRLabel;
+    QRLabelTotAtivos: TQRLabel;
+    QRLabel25: TQRLabel;
+    QRLabelTotcontratos: TQRLabel;
+    QRLabel27: TQRLabel;
+    QRLabelTotDeb: TQRLabel;
+    QRLabel29: TQRLabel;
+    QRLabelTotVrAtivos: TQRLabel;
+    QRLabel38: TQRLabel;
+    QRLTotCancelPF: TQRLabel;
+    QRLabel40: TQRLabel;
+    QRLabel41: TQRLabel;
+    QRLTotAtivosPF: TQRLabel;
+    QRLabel43: TQRLabel;
+    QRLTotCancelPJ: TQRLabel;
+    QRLabel45: TQRLabel;
+    QRLabel46: TQRLabel;
+    QRLTotAtivosPJ: TQRLabel;
+    QRLTotPF: TQRLabel;
+    QRLTOTPJ: TQRLabel;
+    QRLPercentCancelPF: TQRLabel;
+    QRLPercentCancelPJ: TQRLabel;
+    QRLabel21: TQRLabel;
+    QRDBText13: TQRDBText;
+    QRDBText14: TQRDBText;
+    QRLabel24: TQRLabel;
+    QRLabelTTCanPF: TQRLabel;
+    QRLabel28: TQRLabel;
+    QRLabel30: TQRLabel;
+    QRLabelTTAtivPF: TQRLabel;
+    QRLabel32: TQRLabel;
+    QRLabelTTCanPJ: TQRLabel;
+    QRLabel34: TQRLabel;
+    QRLabel35: TQRLabel;
+    QRLabelTTAtivPJ: TQRLabel;
+    QRLabelTTPF: TQRLabel;
+    QRLabelTTPJ: TQRLabel;
+    QRLabelTTPerCanPF: TQRLabel;
+    QRLabelTTPerCanPJ: TQRLabel;
+    QRShape1: TQRShape;
+    QRLabellTTcancelRep: TQRLabel;
+    QRLabel31: TQRLabel;
+    QRLabel26: TQRLabel;
+    QRLabelTTAtivosRep: TQRLabel;
+    QRLabel33: TQRLabel;
+    QRLabelCartaoRecorrente: TQRLabel;
+    QRLabel36: TQRLabel;
+    QRLabelTTCartaoRecorrente: TQRLabel;
+    QRLabel37: TQRLabel;
+    QRLabel39: TQRLabel;
+    QRLabelTTCrRepresentante: TQRLabel;
+    QRLabel42: TQRLabel;
+    QRLabelQtPagVista: TQRLabel;
+    QRLabelQtPagaVistaRepCap: TQRLabel;
+    QRLabelQtPagaVistaRep: TQRLabel;
+    QRLabel44: TQRLabel;
+    QRLabelTTzPagAVista: TQRLabel;
+    procedure DetailBand1BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRBandGrpFooterVendBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QRBandGrfooterRepBeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure SummaryBand1BeforePrint(Sender: TQRCustomBand;
+      var PrintBand: Boolean);
+    procedure QuickRepBeforePrint(Sender: TCustomQuickRep;
+      var PrintReport: Boolean);
+  private
+    TTPFGeral, TTPJGeral, TTPFCanGeral,  TTPJCanGeral : Integer;
+
+   TotVendLiq,TotVend,TotRep,Total,TtoVendaLiqFinal : Real;
+   Cont,QtCancel,Qttot : smallint;
+   QtCancel_PF_Rep, QtCancel_PJ_Rep, QtTot_PJ_Rep, QtTot_PF_Rep : Smallint;
+  TotCancel, TotContrato,TotDeb,TotCR, TotVista : integer;
+
+  public
+    { Public declarations }
+  end;
+
+var
+  QrVendasPorUsu: TQrVendasPorUsu;
+
+implementation
+
+uses udm, RelVendas;
+
+{$R *.DFM}
+
+procedure TQrVendasPorUsu.DetailBand1BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+  inherited;
+  SpDesconto.Close;
+  SpDesconto.ParamByName('@CdContratante').AsInteger := QueryVendasUsu.FieldByName('cd_contrat').AsInteger;
+  SpDesconto.ParamByName('@cdUsuario').AsInteger := QueryVendasUsu.FieldByName('cd_usuario').AsInteger;
+  SpDesconto.ParamByName('@DtBase').AsString := Dm.GetDataSrv;
+  SpDesconto.ExecProc;
+  QRLabelVr.caption := FormatFloat('R$###,###,###,##0.00',QueryVendasUsu.FieldByName('valor').asCurrency - SpDesconto.ParamByName('@VrDescUsu').AsCurrency);
+  TotVend := TotVend + QueryVendasUsu.FieldByName('valor').asCurrency - SpDesconto.ParamByName('@VrDescUsu').AsCurrency;
+
+  inc(cont);
+  inc(Qttot);
+  if QueryVendasUsu.FieldByName('empresa').AsBoolean then
+     inc(QtTot_PJ_Rep)
+  else
+     inc(QtTot_PF_Rep);
+
+  if not QueryVendasUsu.FieldByName('data_exclusao').IsNull then
+  begin
+     inc(QtCancel);
+     if QueryVendasUsu.FieldByName('empresa').AsBoolean then
+        inc(QtCancel_PJ_Rep)
+     else
+        inc(QtCancel_PF_Rep);
+  end
+  else
+  begin
+     TotVendLiq := TotVendLiq + QueryVendasUsu.FieldByName('valor').asCurrency - SpDesconto.ParamByName('@VrDescUsu').AsCurrency;
+  end;
+end;
+
+procedure TQrVendasPorUsu.QRBandGrpFooterVendBeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+  inherited;
+  QRLabelTotVend.caption := FormatFloat('R$###,###,###,##0.00',TotVend);
+  TotRep := TotRep + TotVend;
+  if (FormRelVendas.DBLookupComboBox1.Text <> '') and (FormRelVendas.DBLookupComboBox1.Text <> 'TODAS') then
+     QRLabelQtContrat.caption := dm.execmd('select count(distinct c.codigo) qt from contratante c, usuario u where u.codigo = c.codigo and u.data_exclusao is null and u.dt_venda between ' +  QueryVendasUsu.SQL[35] + ' and c.vendedor = ' + QueryVendasUsu.FieldByName('cd_vendedor').AsString + ' and c.cd_cidade_res = ' + FormRelVendas.ADOQueryCidade.FieldByName('cd_cidade').AsString, 'qt')
+  else
+     QRLabelQtContrat.caption := dm.execmd('select count(distinct c.codigo) qt from contratante c, usuario u where u.codigo = c.codigo and u.data_exclusao is null and u.dt_venda between ' +  QueryVendasUsu.SQL[35] + ' and c.vendedor = ' + QueryVendasUsu.FieldByName('cd_vendedor').AsString, 'qt');
+  QRLabelQtDebAut.caption  := dm.execmd('select count(*) qt from contratante c, tipocobranca t where t.codigo = c.Forma_Cobranca and t.debAutomatico = 1 and c.exclusao is null and c.inclusao between '+  QueryVendasUsu.SQL[35] + ' and vendedor = ' + QueryVendasUsu.FieldByName('cd_vendedor').AsString, 'qt');
+  QRLabelQtPagVista.Caption := dm.execmd('select count(*) qt from contratante c where  c.PagtoContratoAVista = 1 and c.exclusao is null and c.inclusao between '+  QueryVendasUsu.SQL[35] + ' and vendedor = ' + QueryVendasUsu.FieldByName('cd_vendedor').AsString, 'qt');
+  QRLabelCartaoRecorrente.caption := dm.execmd('select count(*) qt from contratante c, tipocobranca t where t.codigo = c.Forma_Cobranca and t.cartaoRecorrencia = 1 and c.exclusao is null and c.inclusao between '+  QueryVendasUsu.SQL[35] + ' and vendedor = ' + QueryVendasUsu.FieldByName('cd_vendedor').AsString, 'qt');
+  QRLabelQtCancel.caption := IntToStr(QtCancel);
+  QRLabelQtAtivos.caption := IntToStr(Qttot - QtCancel);
+  TotCancel := TotCancel + QtCancel;
+
+  TotContrato := TotContrato + StrtoInt(QRLabelQtContrat.caption);
+  TotDeb := TotDeb + StrToInt(QRLabelQtDebAut.caption);
+  TotCR := TotCR + StrToInt(QRLabelCartaoRecorrente.caption); // cartao recorrente
+  TotVista := TotVista +  StrToInt(QRLabelQtPagVista.Caption);
+
+  try
+     TotVendLiq := TotVendLiq + (StrToFloat(dm.GetParam('TX_ADE')) * StrToInt(QRLabelQtContrat.caption)) + (StrToFloat(dm.GetParam('VRDEBI')) * StrToInt(QRLabelQtDebAut.caption)) + (StrToFloat(dm.GetParam('VRCR')) * StrToInt(QRLabelCartaoRecorrente.caption));
+     QRLabelVrAtivos.caption := FormatFloat('R$###,###,###,##0.00',TotVendLiq);
+     TtoVendaLiqFinal := TtoVendaLiqFinal + TotVendLiq;
+  except
+     ShowMessage('Erro nos valores de comissão por contrato e por débito automático, verifique os parâmetros "VRCONT" e "VRDEBI"');
+  end;
+
+
+  Qttot := 0;
+  QtCancel := 0;
+  TotVendLiq := 0;
+  TotVend := 0;
+end;
+
+procedure TQrVendasPorUsu.QRBandGrfooterRepBeforePrint(
+  Sender: TQRCustomBand; var PrintBand: Boolean);
+begin
+  inherited;
+  QRLabelTotRep.caption := FormatFloat('R$###,###,###,##0.00',TotRep);
+  Total := Total + TotRep;
+  TotRep := 0;
+
+  QRLTotPF.caption := IntToStr(QtTot_PF_Rep);
+  QRLTOTPJ.caption := IntToStr(QtTot_PJ_Rep);
+  QRLTotCancelPF.caption := IntToStr(QtCancel_PF_Rep);
+  QRLTotCancelPJ.caption := IntToStr(QtCancel_PJ_Rep);
+  QRLabellTTcancelRep.Caption := IntToStr(QtCancel_PF_Rep + QtCancel_PJ_Rep);
+  QRLabelTTAtivosRep.Caption := IntToStr((QtTot_PF_Rep + QtTot_PJ_Rep) - (QtCancel_PF_Rep + QtCancel_PJ_Rep));
+  QRLTotAtivosPF.caption := IntToStr(QtTot_PF_Rep - QtCancel_PF_Rep);
+  QRLTotAtivosPJ.caption := IntToStr(QtTot_PJ_Rep - QtCancel_PJ_Rep);
+  if QtTot_PF_Rep > 0 then
+     QRLPercentCancelPF.caption :=  FormatFloat('###,##0.00 %',(QtCancel_PF_Rep * 100) / QtTot_PF_Rep) + ' Foram cancelados'
+  else
+     QRLPercentCancelPF.caption :=  '';
+  if QtTot_PJ_Rep > 0 then
+     QRLPercentCancelPJ.caption :=  FormatFloat('###,##0.00 %',(QtCancel_PJ_Rep * 100) / QtTot_PJ_Rep) + ' Foram cancelados'
+  else
+     QRLPercentCancelPJ.caption :=  '';
+
+  QRLabelTTCrRepresentante.Caption :=   dm.execmd('select count(*) qt from contratante c, tipocobranca t, vendedor v where v.Codigo = c.Vendedor and t.codigo = c.Forma_Cobranca and t.cartaoRecorrencia = 1 and c.exclusao is null and c.inclusao between ' +  QueryVendasUsu.SQL[35] +  ' and v.Representante = ' + QueryVendasUsu.FieldByName('cdrepres').AsString , 'qt');
+  QRLabelQtPagaVistaRep.Caption :=   dm.execmd('select count(*) qt from contratante c, tipocobranca t, vendedor v where v.Codigo = c.Vendedor and t.codigo = c.Forma_Cobranca and c.PagtoContratoAVista = 1 and c.exclusao is null and c.inclusao between ' +  QueryVendasUsu.SQL[35] +  ' and v.Representante = ' + QueryVendasUsu.FieldByName('cdrepres').AsString , 'qt');
+  TTPFGeral    := TTPFGeral     + QtTot_PF_Rep;
+  TTPJGeral    := TTPJGeral     + QtTot_PJ_Rep;
+  TTPFCanGeral :=  TTPFCanGeral + QtCancel_PF_Rep;
+  TTPJCanGeral :=  TTPJCanGeral + QtCancel_PJ_Rep;
+
+  QtTot_PF_Rep := 0;
+  QtTot_PJ_Rep := 0;
+  QtCancel_PF_Rep := 0;
+  QtCancel_PJ_Rep := 0;
+//  ta dando erro quando seleciona todos
+//  mudar data de inclusao para data da venda
+//  verificar quebra do relatorio(anotod)
+
+end;
+
+procedure TQrVendasPorUsu.SummaryBand1BeforePrint(Sender: TQRCustomBand;
+  var PrintBand: Boolean);
+begin
+  inherited;
+
+  QRLabelTTPF.Caption     := IntToStr(TTPFGeral);
+  QRLabelTTCanPF.Caption  := IntToStr(TTPFCanGeral);
+  QRLabelTTAtivPF.Caption := IntToStr(TTPFGeral - TTPFCanGeral);
+
+  if TTPFGeral > 0 then
+     QRLabelTTPerCanPF.caption :=  FormatFloat('###,##0.00 %',(TTPFCanGeral * 100) / TTPFGeral) + ' Foram cancelados'
+  else
+     QRLabelTTPerCanPF.caption :=  '';
+
+
+  QRLabelTTPJ.Caption := IntToStr(TTPJGeral);
+
+  QRLabelTTCanPJ.Caption := IntToStr(TTPJCanGeral);
+  QRLabelTTAtivPJ.Caption := IntToStr(TTPJGeral - TTPJCanGeral);
+  if TtPJGeral > 0 then
+     QRLabelTTPerCanPJ.caption :=  FormatFloat('###,##0.00 %',(TTPJCanGeral * 100) / TTPJGeral) + ' Foram cancelados'
+  else
+     QRLabelTTPerCanPJ.caption :=  '';
+
+
+   QRLabelTotCancel.Caption := IntToStr(TotCancel);
+   QRLabelTotAtivos.Caption := IntToStr(cont - TotCancel);
+   QRLabelTotcontratos.Caption := IntToStr(TotContrato);
+   QRLabelTotDeb.Caption := IntToStr(TotDeb);
+   QRLabelTTCartaoRecorrente.Caption := IntToStr(TotCR);
+   QRLabelTotVrAtivos.Caption := FormatFloat('R$###,###,###,##0.00',TtoVendaLiqFinal);
+   QRLabelTTzPagAVista.Caption := IntToStr(TotVista);
+   QRLabelTot.caption := FormatFloat('R$###,###,###,##0.00',Total);
+   QRLabelMedia.caption := 'Valor médio por vida ' + FormatFloat('R$###,###,###,##0.00',Total / cont);
+   try
+      QRLabel19.caption := 'Este valor refere-se a soma das mensalidades de usuários ativos somado a ' +  FormatFloat('R$##,0.00',StrToFloat(dm.GetParam('TX_ADE'))) + ' por contrato mais ' + FormatFloat('R$##,0.00',StrToFloat(dm.GetParam('VRDEBI'))) + ' por débitto automático';
+   except
+   end;
+   Total := 0;
+end;
+
+procedure TQrVendasPorUsu.QuickRepBeforePrint(Sender: TCustomQuickRep;
+  var PrintReport: Boolean);
+begin
+  inherited;
+  TTPFGeral    := 0;
+  TTPJGeral    := 0;
+  TTPFCanGeral := 0;
+  TTPJCanGeral := 0;
+  TotVista := 0;
+  TotCancel := 0;
+  TotContrato  := 0;
+  TotDeb  := 0;
+  TotCR := 0;
+  TotVend := 0;
+  TotVendLiq := 0;
+  TotRep  := 0;
+  Total   := 0;
+  Cont    := 0;
+  QtCancel := 0;
+  Qttot    := 0;
+  QtTot_PJ_Rep := 0;
+  QtTot_PF_Rep := 0;
+  QtCancel_PJ_Rep := 0;
+  QtCancel_PF_Rep := 0;
+  DecimalSeparator := '.';
+  TotCancel := 0;
+  TotContrato := 0;
+  TotDeb := 0;
+  TtoVendaLiqFinal := 0;
+end;
+
+end.
+
+

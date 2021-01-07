@@ -1,0 +1,75 @@
+--alter Procedure SpCancArqSusep
+--select * into usuario_250811 from usuario
+
+declare @data datetime
+
+--as
+set dateformat dmy
+set @data = '04/08/2011'
+begin tran
+
+--inclusao
+
+update usuario -- usuarios de inclusão na susep
+set Inclusao_Susep = null
+where  Inclusao_Susep between (convert(datetime, @data + ' 00:00:00',103)) and
+                              (convert(datetime, @data + ' 23:59:59',103))
+and not exists(select * from usuario u where 
+u.codigo_completo = usuario.codigo_completo and
+cco + dg_cco in
+(
+'026809541300',
+'026809541409',
+'026809541507',
+'026809541605',
+'026809541703',
+'026809541801',
+'026809541900',
+'026809542003',
+'026809542101',
+'026809542200',
+'026809542308',
+'026809542406',
+'026809542504',
+'026809542602',
+'026809542700',
+'026809542809',
+'026809542907',
+'026809543000',
+'026809543109',
+'026809543207',
+'026809543305',
+'026809543403',
+'026809543501',
+'026809543600',
+'026809543708',
+'026809543806',
+'026809543904')
+)
+
+select 'alteração'
+
+update usuario -- usuarios de alteracao na susep
+set alteracao_susep = null, alterado = 1
+where alteracao_Susep between (convert(datetime, @data + ' 00:00:00',103)) and
+                              (convert(datetime, @data + ' 23:59:59',103))
+select  'reinclusao'
+
+update usuario -- usuarios de alteracao na susep
+set reinclusao_sib = null
+where reinclusao_sib between (convert(datetime, @data + ' 00:00:00',103)) and
+                              (convert(datetime, @data + ' 23:59:59',103))
+--update paramANS set UltArqSusep = UltArqSusep - 1
+
+--commit
+
+
+
+
+
+
+
+--select * from usuario where inclusao_susep = (select max(inclusao_susep) from usuario) 778
+--select * frInclusao_Susep
+
+commit

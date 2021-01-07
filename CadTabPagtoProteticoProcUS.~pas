@@ -1,0 +1,25 @@
+unit CadTabPagtoProteticoProcUS;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Padrao, ADODB, DB, DBTables, Grids, DBGrids, ExtCtrls, StdCtrls,
+  Buttons;
+
+type
+  TFmPadrao1 = class(TFmPadrao)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FmPadrao1: TFmPadrao1;
+
+implementation
+
+{$R *.dfm}
+
+end.

@@ -1,0 +1,75 @@
+<EnviarLoteRpsEnvio xmlns:ns3="http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd"
+xmlns:ns4="http://www.ginfes.com.br/tipos_v03.xsd"
+xmlns:ns5="http://www.ginfes.com.br/cabecalho_v03.xsd">
+  <LoteRps Id="lote">
+    <NumeroLote>157</NumeroLote>
+    <Cnpj>02286968000151</Cnpj>
+    <InscricaoMunicipal>200265375</InscricaoMunicipal>
+    <QuantidadeRps>1</QuantidadeRps>
+    <ListaRps>
+      <Rps>
+        <InfRps Id="rps_23254">
+          <IdentificacaoRps>
+            <Numero>23254</Numero>
+            <Serie>NF</Serie>
+            <Tipo>1</Tipo>
+          </IdentificacaoRps>
+          <DataEmissao>2010-06-07T15:33:44</DataEmissao>
+          <NaturezaOperacao>1</NaturezaOperacao>
+          <OptanteSimplesNacional>1</OptanteSimplesNacional>
+          <IncentivadorCultural>2</IncentivadorCultural>
+          <Status>1</Status>
+          <Servico>
+            <Valores>
+              <ValorServicos>600</ValorServicos>
+              <ValorDeducoes>0</ValorDeducoes>
+              <ValorPis>0</ValorPis>
+              <ValorCofins>0</ValorCofins>
+              <ValorInss>0</ValorInss>
+              <ValorIr>0</ValorIr>
+              <ValorCsll>0</ValorCsll>
+              <IssRetido>2</IssRetido>
+              <ValorIss>0</ValorIss>
+              <ValorIssRetido>0</ValorIssRetido>
+              <OutrasRetencoes>0</OutrasRetencoes>
+              <BaseCalculo>600</BaseCalculo>
+              <Aliquota>0</Aliquota>
+              <ValorLiquidoNfse>600</ValorLiquidoNfse>
+              <DescontoIncondicionado>0</DescontoIncondicionado>
+              <DescontoCondicionado>0</DescontoCondicionado>
+            </Valores>
+            <ItemListaServico>01.01</ItemListaServico>
+            <CodigoTributacaoMunicipio>
+            620150000</CodigoTributacaoMunicipio>
+            <Discriminacao>IMPLANTACAO ON DEMAND</Discriminacao>
+            <CodigoMunicipio>3524709</CodigoMunicipio>
+          </Servico>
+          <Prestador>
+            <Cnpj>02286968000151</Cnpj>
+            <InscricaoMunicipal>200265375</InscricaoMunicipal>
+          </Prestador>
+          <Tomador>
+            <IdentificacaoTomador>
+              <CpfCnpj>
+                <Cnpj>07674528000195</Cnpj>
+              </CpfCnpj>
+            </IdentificacaoTomador>
+            <RazaoSocial>1140-JC&amp;FILHOS COM.ATC.COMP.ALTO
+            FAL.LTDA EPP</RazaoSocial>
+            <Endereco>
+              <Endereco>ESTRADA DOS FERNANDES</Endereco>
+              <Numero>2351</Numero>
+              <Bairro>CASA BRANCA</Bairro>
+              <CodigoMunicipio>3552502</CodigoMunicipio>
+              <Uf>SP</Uf>
+              <Cep>08664005</Cep>
+            </Endereco>
+            <Contato>
+              <Email>denise_bobivox@hotmail.com</Email>
+            </Contato>
+          </Tomador>
+        </InfRps>
+      </Rps>
+    </ListaRps>
+  </LoteRps>
+</EnviarLoteRpsEnvio>

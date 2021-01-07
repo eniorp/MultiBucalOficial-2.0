@@ -1,0 +1,385 @@
+unit gerenciamentoDeLED;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, StdCtrls, DBCtrls, DB, Mask, ADODB, ExtCtrls, IdIOHandler,
+  IdIOHandlerSocket, IdSSLOpenSSL, IdMessage, IdAntiFreezeBase,
+  IdAntiFreeze, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient,
+  IdMessageClient, IdSMTP, ComCtrls;
+
+type
+  TFmGerenciamentoLEADS = class(TForm)
+    AdoQueryGerenciametnoLEADS: TADOQuery;
+    AdoQueryGerenciametnoLEADSindice: TIntegerField;
+    AdoQueryGerenciametnoLEADSnome: TStringField;
+    AdoQueryGerenciametnoLEADSddd: TSmallintField;
+    AdoQueryGerenciametnoLEADSfone: TIntegerField;
+    AdoQueryGerenciametnoLEADSemail: TStringField;
+    AdoQueryGerenciametnoLEADScdOrigemContato: TSmallintField;
+    AdoQueryGerenciametnoLEADScdRepresentante: TSmallintField;
+    AdoQueryGerenciametnoLEADSdtInclusao: TDateTimeField;
+    AdoQueryGerenciametnoLEADScdOperador: TIntegerField;
+    AdoQueryGerenciametnoLEADScdStatus: TStringField;
+    Label1: TLabel;
+    DBEdit1: TDBEdit;
+    DataSource1: TDataSource;
+    Label2: TLabel;
+    DBEdit2: TDBEdit;
+    Label3: TLabel;
+    DBEdit3: TDBEdit;
+    Label4: TLabel;
+    DBEdit4: TDBEdit;
+    Label5: TLabel;
+    DBEdit5: TDBEdit;
+    Label6: TLabel;
+    Label7: TLabel;
+    Label8: TLabel;
+    DBEdit8: TDBEdit;
+    Label9: TLabel;
+    Label10: TLabel;
+    DBLookupComboBox1: TDBLookupComboBox;
+    DBLookupComboBox2: TDBLookupComboBox;
+    DBNavigator1: TDBNavigator;
+    Button1: TButton;
+    Label11: TLabel;
+    DBMemo1: TDBMemo;
+    AdoQueryGerenciametnoLEADSobservacao: TStringField;
+    ADOQueryRepresentante: TADOQuery;
+    DataSourceRepresentante: TDataSource;
+    DataSourceOrigemContato: TDataSource;
+    ADOQueryOrigemContato: TADOQuery;
+    Button2: TButton;
+    Button3: TButton;
+    Bevel1: TBevel;
+    EditNmOperador: TEdit;
+    AdoQueryGerenciametnoLEADSenviadoEmail: TBooleanField;
+    LabelEmail: TLabel;
+    Timer2: TTimer;
+    ProgressBar1: TProgressBar;
+    Button4: TButton;
+    Panel1: TPanel;
+    DBCheckBox1: TDBCheckBox;
+    DBLookupComboBox3: TDBLookupComboBox;
+    ADOQueryStatus: TADOQuery;
+    DataSourceStatus: TDataSource;
+    QueryCidade: TADOQuery;
+    DsCidade: TDataSource;
+    DBLookupComboBox4: TDBLookupComboBox;
+    Label16: TLabel;
+    AdoQueryGerenciametnoLEADSdtExclusao: TDateTimeField;
+    AdoQueryGerenciametnoLEADScdCidade: TSmallintField;
+    procedure FormKeyPress(Sender: TObject; var Key: Char);
+    procedure FormShow(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure AdoQueryGerenciametnoLEADSBeforePost(DataSet: TDataSet);
+    procedure Button1Click(Sender: TObject);
+    procedure DBLookupComboBox1Click(Sender: TObject);
+    procedure Timer2Timer(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure Button4Click(Sender: TObject);
+    procedure AdoQueryGerenciametnoLEADSBeforeDelete(DataSet: TDataSet);
+    procedure DBNavigator1BeforeAction(Sender: TObject;
+      Button: TNavigateBtn);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FmGerenciamentoLEADS: TFmGerenciamentoLEADS;
+
+implementation
+
+uses udm,senha, pesquisaLEADS;
+
+{$R *.dfm}
+
+procedure TFmGerenciamentoLEADS.FormKeyPress(Sender: TObject;
+  var Key: Char);
+begin
+   if key = #13 then
+      Perform(WM_NEXTDLGCTL, 0 , 0 );
+
+end;
+
+procedure TFmGerenciamentoLEADS.FormShow(Sender: TObject);
+begin
+  QueryCidade.Open;
+  ADOQueryStatus.open;
+  AdoQueryGerenciametnoLEADS.Open;
+  ADOQueryRepresentante.open;
+  ADOQueryOrigemContato.open;
+  if fmGerenciamentoLeads.Tag = 0 then
+  begin
+     if(dm.execmd('select count(*) q from operador where codigo = ' + intToStr(senha.Codigo_Operador) + ' and cdRepresentante is not null','q') <> '0') then
+     begin // se tiver um representante associado assume perfil de representante, pode ser que tenha pressionado F10 , dessa forma força a entrar como representante
+       FmGerenciamentoLEADS.Tag := 1;
+       //fmGerenciamentoLEADS.DBLookupComboBox2.Enabled := false;
+       fmGerenciamentoLEADS.DBLookupComboBox1.Enabled := false;
+       fmGerenciamentoLEADS.DBLookupComboBox3.Enabled := true;
+     end;
+     Button2Click(sender);
+  end
+  else
+  begin
+     Panel1.Color := clRed;
+     Panel1.Caption := 'GERENCIAMENTO DE LEADS(REPRESENTANTES)';
+     Button4Click(sender);
+  end;
+end;
+
+procedure TFmGerenciamentoLEADS.Button2Click(Sender: TObject);
+
+begin
+
+   AdoQueryGerenciametnoLEADS.Insert;
+   AdoQueryGerenciametnoLEADScdOperador.AsInteger := Senha.Codigo_Operador;
+   AdoQueryGerenciametnoLEADSenviadoEmail.AsBoolean := false;
+   AdoQueryGerenciametnoLEADScdStatus.AsString := 'PD';
+   AdoQueryGerenciametnoLEADSddd.AsInteger := 16;
+   EditNmOperador.Text := senha.NomeSenha;
+   LabelEmail.Caption := '';
+   if FmGerenciamentoLEADS.Tag = 1 then // qdo for representante ele só pode cadastrar lead para ele mesmo
+   begin
+      AdoQueryGerenciametnoLEADScdRepresentante.AsString := dm.execmd('select cdRepresentante a from operador where codigo = ' + intToStr(senha.Codigo_Operador),'a');
+      LabelEmail.Caption := dm.execmd('select ltrim(rtrim(e_mail)) mail from representante where codigo = ''' + AdoQueryGerenciametnoLEADScdRepresentante.AsString + '''','mail');
+      if LabelEmail.Caption = '' then
+         LabelEmail.Caption := 'REPRESENTANTE SEM EMAIL';
+   end;
+
+   DBEdit2.setFocus;
+
+
+   //EditNmOperador
+   //AdoQueryGerenciametnoLEADSdtInclusao.AsString :=
+
+end;
+
+procedure TFmGerenciamentoLEADS.Button3Click(Sender: TObject);
+begin
+   
+   close;
+end;
+
+procedure TFmGerenciamentoLEADS.AdoQueryGerenciametnoLEADSBeforePost(
+  DataSet: TDataSet);
+begin
+   if AdoQueryGerenciametnoLEADSemail.AsString <> '' then
+   begin
+      if not dm.ValidarEMail(AdoQueryGerenciametnoLEADSemail.AsString) then
+       begin
+          Button1.Enabled := true;
+          Timer2.Enabled := false;
+           ProgressBar1.Position := 0;
+
+          ShowMessage('email ' + AdoQueryGerenciametnoLEADSemail.AsString + ' inválido !');
+          sysutils.Abort;
+       end;
+   end;
+
+   if AdoQueryGerenciametnoLEADSnome.asstring = '' then
+   begin
+      Button1.Enabled := true;
+      Timer2.Enabled := false;
+      ProgressBar1.Position := 0;
+      ShowMessage('Nome do contato obrigatório');
+      DBEdit2.SetFocus;
+      abort;
+   end;
+   if AdoQueryGerenciametnoLEADSddd.IsNull or AdoQueryGerenciametnoLEADSfone.IsNull then
+   begin
+      Button1.Enabled := true;
+      Timer2.Enabled := false;
+      ProgressBar1.Position := 0;
+      ShowMessage('telefone obrigatório');
+      DBEdit4.SetFocus;
+      abort;
+   end;
+   if AdoQueryGerenciametnoLEADScdOrigemContato.IsNull then
+   begin
+      Button1.Enabled := true;
+      Timer2.Enabled := false;
+      ProgressBar1.Position := 0;
+      ShowMessage('Origem do contato deve ser preenchido');
+      DBEdit4.SetFocus;
+      abort;
+   end;
+   if AdoQueryGerenciametnoLEADScdCidade.IsNull then
+   begin
+      Button1.Enabled := true;
+      Timer2.Enabled := false;
+      ProgressBar1.Position := 0;
+      ShowMessage('Cidade do contato deve ser preenchido');
+      DBEdit4.SetFocus;
+      abort;
+   end;
+
+   if AdoQueryGerenciametnoLEADScdRepresentante.IsNull then
+   begin
+      Button1.Enabled := true;
+      Timer2.Enabled := false;
+      ProgressBar1.Position := 0;
+      ShowMessage('Representante deve ser preenchido');
+      DBEdit4.SetFocus;
+      abort;
+   end;
+
+
+end;
+
+procedure TFmGerenciamentoLEADS.Button1Click(Sender: TObject);
+var aux : string;
+    assuntoAux : string;
+begin
+   if AdoQueryGerenciametnoLEADS.State = dsedit then
+   begin
+      AdoQueryGerenciametnoLEADS.post;
+      exit;
+   end;
+
+   Timer2Timer(sender);
+   Button1.Enabled := false;
+   Timer2.Enabled := true;
+//   InputBox('teste','','select g.nome + '' + na data '' + convert(varchar(10),dtinclusao,103) + '' por '' + u.nome r + '' para o vendedor : '' + r.Nome from gerenciamentoLeads g, operador u, Representante r where  r.CODIGO = g.cdRepresentante and u.codigo = g.cdOperador and ddd = ''' + AdoQueryGerenciametnoLEADSddd.AsString + ''' and g.fone = ''' + AdoQueryGerenciametnoLEADSfone.AsString + '''');
+   aux := dm.execmd('select g.nome + '' + na data '' + convert(varchar(10),dtinclusao,103) + '' por '' + u.nome + '' para o vendedor : '' + r.Nome r from gerenciamentoLeads g, operador u, Representante r , parametro p ' +
+   ' where p.cd_parametro = ''CMTL'' and datediff(month,dtinclusao,getdate()) <= p.vl_parametro and ' +
+   ' r.CODIGO = g.cdRepresentante and u.codigo = g.cdOperador and ddd = ''' +
+   AdoQueryGerenciametnoLEADSddd.AsString + ''' and g.fone = ''' + AdoQueryGerenciametnoLEADSfone.AsString + '''','r');
+   if aux <> '' then
+   begin
+      if Application.MessageBox(Pchar('ATENÇÃO!!! já existe um LEAD cadastrado para esse telefone para ' + aux + ' confirma mesmo assim? '),'Cadastro duplicado',MB_OKCANCEL + MB_DEFBUTTON2) <> IDOK then
+         exit;
+   end;
+   AdoQueryGerenciametnoLEADSindice.AsString := dm.execmd('select isnull(max(indice),0) + 1 id from gerenciamentoLEADS','id');
+   AdoQueryGerenciametnoLEADSdtInclusao.AsDateTime := dm.now;
+   AdoQueryGerenciametnoLEADS.Post;
+   if LabelEmail.Caption <> 'REPRESENTANTE SEM EMAIL' then
+   begin
+      assuntoAux := '<html><body><p>' + 'Olá ' + DBLookupComboBox1.Text + '</p> <p> novo LEAD cadastrado para você. </p><p>Nome : ' + DBEdit2.text + '</p><p> telefone ' +  AdoQueryGerenciametnoLEADSddd.AsString + '-' + AdoQueryGerenciametnoLEADSfone.AsString + '</p><p>obs: ' + AdoQueryGerenciametnoLEADSobservacao.AsString + '</p> ' +
+      '<p>Email : '  + AdoQueryGerenciametnoLEADSemail.AsString + '</p><p> Origem contato : ' + DBLookupComboBox2.Text + '</p><p> cidade : ' + DBLookupComboBox4.Text  + '</p></body></html>';
+      aux := dm.enviaEmail('Novo Lead - ' + DBEdit2.text,assuntoAux ,LabelEmail.Caption);
+      Button1.Enabled := true;
+      Timer2.Enabled := false;
+      ProgressBar1.Position := 0;
+      if aux = '' then
+      begin
+         AdoQueryGerenciametnoLEADS.Edit;
+         AdoQueryGerenciametnoLEADSenviadoEmail.AsBoolean := true;
+         AdoQueryGerenciametnoLEADS.Post;
+         ShowMessage('LEAD cadastrado com sucesso, e-mail enviado para ' + LabelEmail.Caption + ' !');
+      end
+      else
+         ShowMessage('LEAD cadastrado com sucesso, porém ocorreu um erro ao enviar e-mail : !' + aux);
+   end;
+
+
+end;
+
+procedure TFmGerenciamentoLEADS.DBLookupComboBox1Click(Sender: TObject);
+begin
+   LabelEmail.Caption := dm.execmd('select ltrim(rtrim(e_mail)) mail from representante where codigo = ' + ADOQueryRepresentante.FieldByName('codigo').AsString,'mail');
+   if LabelEmail.Caption = '' then
+     LabelEmail.Caption := 'REPRESENTANTE SEM EMAIL';
+end;
+
+procedure TFmGerenciamentoLEADS.Timer2Timer(Sender: TObject);
+begin
+    if ProgressBar1.Position > 100 then
+        ProgressBar1.Position := 0;
+    ProgressBar1.Position := ProgressBar1.Position + 1;
+end;
+
+procedure TFmGerenciamentoLEADS.FormCloseQuery(Sender: TObject;
+  var CanClose: Boolean);
+begin
+   if (AdoQueryGerenciametnoLEADS.State in[dsedit,dsinsert]) and not AdoQueryGerenciametnoLEADSnome.IsNull then
+   if Application.MessageBox(Pchar('ATENÇÃO!!! LEAD não foi salvo, deseja salvar e sair?'),'Cadastro não salvo',MB_OKCANCEL + MB_DEFBUTTON2) = IDOK then
+      Button1Click(sender)
+   else
+     CanClose := false;
+end;
+
+procedure TFmGerenciamentoLEADS.Button4Click(Sender: TObject);
+
+begin
+   FmPesqGerenciamentoLEADS := TFmPesqGerenciamentoLEADS.create(self);
+   if dm.execmd('select cd_grupo from operador where codigo = ' + intToStr(senha.Codigo_Operador),'cd_grupo') = '6' then
+   begin
+     FmPesqGerenciamentoLEADS.ADOQueryH.SQL.Clear;
+     FmPesqGerenciamentoLEADS.ADOQueryH.SQL.Add('');
+     FmPesqGerenciamentoLEADS.ADOQueryH.SQL[0] := 'select indice,l.nome, l.ddd, l.fone, email, l.dtInclusao,cdStatus, o.descricao OrigemContato, op.apelido, r.nome representante from Representante r, GerenciamentoLEADS l';
+     FmPesqGerenciamentoLEADS.ADOQueryH.SQL[0] :=  FmPesqGerenciamentoLEADS.ADOQueryH.SQL[0] + ', origemContatoLEADS o, operador op where l.cdOrigemContato = o.cdOrigemContato';
+     FmPesqGerenciamentoLEADS.ADOQueryH.SQL.Add(' ');
+     FmPesqGerenciamentoLEADS.ADOQueryH.SQL.Add(' and l.dtexclusao is null and r.codigo = l.cdRepresentante and op.codigo = l.cdOperador ');
+
+   end
+   else
+   if FmGerenciamentoLEADS.Tag = 1 then // qdo for representante que estiver gerenciando os leads, faz amarração com a tabela operador x representante
+   begin
+     FmPesqGerenciamentoLEADS.ADOQueryH.SQL.Clear;
+     FmPesqGerenciamentoLEADS.ADOQueryH.SQL.Add('');
+     FmPesqGerenciamentoLEADS.ADOQueryH.SQL[0] := 'select indice,l.nome, l.ddd, l.fone, email, l.dtInclusao,cdStatus, o.descricao OrigemContato, op.apelido, r.nome representante from Representante r, GerenciamentoLEADS l';
+     FmPesqGerenciamentoLEADS.ADOQueryH.SQL[0] :=  FmPesqGerenciamentoLEADS.ADOQueryH.SQL[0] + ', origemContatoLEADS o, operador op, operador opre where l.cdOrigemContato = o.cdOrigemContato';
+     FmPesqGerenciamentoLEADS.ADOQueryH.SQL.Add(' ');
+     FmPesqGerenciamentoLEADS.ADOQueryH.SQL.Add(' and l.dtexclusao is null and r.codigo = l.cdRepresentante and op.codigo = l.cdOperador and opre.cdRepresentante = l.cdRepresentante and opre.codigo = ' + intToStr(senha.Codigo_Operador));
+   end
+   else // filtra somente os leads que a pessoa criou
+      FmPesqGerenciamentoLEADS.ADOQueryH.SQL[3] := intToStr(senha.Codigo_Operador);
+
+   FmPesqGerenciamentoLEADS.ShowModal;
+   if FmPesqGerenciamentoLEADS.tag = 1 then
+   begin
+      if (AdoQueryGerenciametnoLEADS.State <> dsBrowse) and not AdoQueryGerenciametnoLEADSnome.IsNull then
+      begin
+        if Application.MessageBox(Pchar('Atenção o registro atual não está salvo, deseja salva-lo antes de resgatar o registro da pesquisa ?'),'Cadastro não salvo',MB_OKCANCEL + MB_DEFBUTTON2) = IDOK then
+           AdoQueryGerenciametnoLEADS.Post;
+      end;
+      AdoQueryGerenciametnoLEADS.close;
+      AdoQueryGerenciametnoLEADS.sql[1] := FmPesqGerenciamentoLEADS.ADOQueryH.fieldByName('indice').AsString;
+      AdoQueryGerenciametnoLEADS.open;
+      EditNmOperador.Text := FmPesqGerenciamentoLEADS.ADOQueryH.fieldByName('apelido').AsString;
+   end;
+
+   FmPesqGerenciamentoLEADS.Free;
+end;
+
+procedure TFmGerenciamentoLEADS.AdoQueryGerenciametnoLEADSBeforeDelete(
+  DataSet: TDataSet);
+begin
+   if not dm.VerifPermissao('ExcluiAlteraLEAD') then
+   begin
+      ShowMessage('Você não tem permissão para excluir Leads');
+      abort;
+   end;
+   if Application.MessageBox(Pchar('Deseja realmente excluir o LEAD?'),'Exclusão',MB_OKCANCEL + MB_DEFBUTTON2) = IDOK then
+   begin
+      dm.execmd('update GerenciamentoLEADS set dtExclusao = getdate() where indice = ' + AdoQueryGerenciametnoLEADSindice.AsString);
+      ShowMessage('Exclusão Efetuada com sucesso!');
+      Button2Click(Button2);
+      Abort;
+   end;
+
+end;
+
+procedure TFmGerenciamentoLEADS.DBNavigator1BeforeAction(Sender: TObject;
+  Button: TNavigateBtn);
+begin
+  if Button = nbPost then
+  begin
+   if AdoQueryGerenciametnoLEADS.state = dsinsert then
+   begin
+      ShowMessage('Atenção para gravar um novo LEAD, clique no botão gravar, teclas ALT + G, utilize esse botão somente para gravar alterações');
+      abort;
+   end;
+  
+  end;
+end;
+
+end.
+
+
+

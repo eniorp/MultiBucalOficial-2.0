@@ -1,0 +1,58 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="Monitoramento_MasterPage" %>
+
+<!DOCTYPE html>
+
+<html lang="pt-br">
+<head runat="server">
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+   <meta name="viewport" content="width-device-width, initial-scale=1,shrink-to-fit=no" />    <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />    <link rel="stylesheet" href="../boot/bibliotecas/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../boot/bibliotecas/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="../boot/bibliotecas/datatables/dataTables.bootstrap4.css" />
+    <link rel="stylesheet" href="../boot/css/sb-admin.css" />   
+    <title></title>
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form runat="server">
+    <div class="page">
+        <div class="header">
+            <div class="title">
+                <h1>
+                    <a style="color:White" href="#">Monitoramento ANS</a>
+                </h1>
+            </div>
+            <div class="loginDisplay">
+            </div>
+            <div class="clear hideSkiplink">
+                <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
+                    <Items>
+                        <asp:MenuItem NavigateUrl="#" Text="Home"/>
+                        <asp:MenuItem NavigateUrl="#" Text="About"/>
+                    </Items>
+                </asp:Menu>
+            </div>
+        </div>
+        <div class="main">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server"/>
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+    <div class="footer">
+        
+    </div>
+    </form>
+     <script src= "../boot/bibliotecas/jquery/jquery.min.js"></script>    
+     <script src="../boot/bibliotecas/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../boot/bibliotecas/jquery-easing/jquery.easing.min.js"></script>    
+    <script src="../boot/bibliotecas/datatables/jquery.dataTables.js"></script>    
+    <script src="../boot/bibliotecas/datatables/dataTables.bootstrap4.js"></script>    
+    <script src="../boot/js/sb-admin.min.js" type="text/javascript"></script>    
+    <script src="../boot/js/sb-admin-datatables.min.js" type="text/javascript"></script>    
+    <script type="text/javascript">
+        $('.modal').modal('show')
+    </script>
+
+</body>
+</html>

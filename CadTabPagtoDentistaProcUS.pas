@@ -1,0 +1,103 @@
+unit CadTabPagtoDentistaProcUS;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, Padrao, DBCtrls, StdCtrls, Mask, DB, DBTables, Grids, DBGrids,
+  ExtCtrls, Buttons, ADODB;
+
+type
+  TFmCadTabPagDentProcUS = class(TFmPadrao)
+    Label1: TLabel;
+    DBEdit1: TDBEdit;
+    Label5: TLabel;
+    DBEdit5: TDBEdit;
+    Label6: TLabel;
+    DBEdit6: TDBEdit;
+    DBEdit4: TDBEdit;
+    Label4: TLabel;
+    DBNavigator1: TDBNavigator;
+    Label2: TLabel;
+    DBEdit2: TDBEdit;
+    Label3: TLabel;
+    Edit1: TEdit;
+    ADOQuery1: TADOQuery;
+    ADOQuery1indice: TIntegerField;
+    ADOQuery1cd_dentista: TIntegerField;
+    ADOQuery1cd_procedimento: TIntegerField;
+    ADOQuery1vrUS: TBCDField;
+    ADOQuery1dtIni: TDateTimeField;
+    ADOQuery1dtFim: TDateTimeField;
+    ADOQuery1obs: TStringField;
+    ADOQuery1Descricao: TStringField;
+    procedure ADOQuery1NewRecord(DataSet: TDataSet);
+    procedure ADOQuery1BeforeDelete(DataSet: TDataSet);
+    procedure ADOQuery1BeforePost(DataSet: TDataSet);
+    procedure FormShow(Sender: TObject);
+    procedure ADOQuery1AfterScroll(DataSet: TDataSet);
+  private
+    { Private declarations }
+  public
+    cdDentistaAux : integer;
+  end;
+
+var
+  FmCadTabPagDentProcUS: TFmCadTabPagDentProcUS;
+
+implementation
+
+uses udm;
+
+{$R *.dfm}
+
+procedure TFmCadTabPagDentProcUS.ADOQuery1NewRecord(DataSet: TDataSet);
+begin
+  inherited;
+   ADOQuery1dtIni.AsDateTime := dm.Date;
+   ADOQuery1cd_dentista.AsInteger := cdDentistaAux;
+
+end;
+
+procedure TFmCadTabPagDentProcUS.ADOQuery1BeforeDelete(DataSet: TDataSet);
+begin
+  inherited;
+   ADOQuery1.Edit;
+   ADOQuery1dtFim.AsDateTime := dm.Date;
+   ADOQuery1.post;
+   abort;
+
+end;
+
+procedure TFmCadTabPagDentProcUS.ADOQuery1BeforePost(DataSet: TDataSet);
+begin
+  inherited;
+   if ADOQuery1.State = dsInsert then
+        ADOQuery1indice.AsString := dm.execmd('select isnull(max(indice),0) + 1 indice from TabPagDentistaXProcedimento','indice');
+
+    if ADOQuery1cd_procedimento.IsNull then
+    begin
+       ShowMessage('Informe a procedimento');
+       abort;
+    end;
+    if ADOQuery1vrUS.IsNull then
+    begin
+       ShowMessage('Informe o valor');
+       abort;
+    end;
+
+end;
+
+procedure TFmCadTabPagDentProcUS.FormShow(Sender: TObject);
+begin
+  inherited;
+   ADOQuery1.Open;
+end;
+
+procedure TFmCadTabPagDentProcUS.ADOQuery1AfterScroll(DataSet: TDataSet);
+begin
+  inherited;
+    Edit1.Text := dm.execmd('select descricao from servicos where codigo = ''' + ADOQuery1cd_procedimento.AsString + '''','descricao');
+end;
+
+end.

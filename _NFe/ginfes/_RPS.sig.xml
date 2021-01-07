@@ -1,0 +1,137 @@
+<EnviarLoteRpsEnvio xmlns:ns3="http://www.ginfes.com.br/servico_enviar_lote_rps_envio_v03.xsd" xmlns:ns4="http://www.ginfes.com.br/tipos_v03.xsd" xmlns:ns5="http://www.ginfes.com.br/cabecalho_v03.xsd">
+  <LoteRps Id="lote">
+    <NumeroLote>157</NumeroLote>
+    <Cnpj>02286968000151</Cnpj>
+    <InscricaoMunicipal>200265375</InscricaoMunicipal>
+    <QuantidadeRps>1</QuantidadeRps>
+    <ListaRps>
+      <Rps>
+        <InfRps Id="rps_23254">
+          <IdentificacaoRps>
+            <Numero>23254</Numero>
+            <Serie>NF</Serie>
+            <Tipo>1</Tipo>
+          </IdentificacaoRps>
+          <DataEmissao>2010-06-07T15:33:44</DataEmissao>
+          <NaturezaOperacao>1</NaturezaOperacao>
+          <OptanteSimplesNacional>1</OptanteSimplesNacional>
+          <IncentivadorCultural>2</IncentivadorCultural>
+          <Status>1</Status>
+          <Servico>
+            <Valores>
+              <ValorServicos>600</ValorServicos>
+              <ValorDeducoes>0</ValorDeducoes>
+              <ValorPis>0</ValorPis>
+              <ValorCofins>0</ValorCofins>
+              <ValorInss>0</ValorInss>
+              <ValorIr>0</ValorIr>
+              <ValorCsll>0</ValorCsll>
+              <IssRetido>2</IssRetido>
+              <ValorIss>0</ValorIss>
+              <ValorIssRetido>0</ValorIssRetido>
+              <OutrasRetencoes>0</OutrasRetencoes>
+              <BaseCalculo>600</BaseCalculo>
+              <Aliquota>0</Aliquota>
+              <ValorLiquidoNfse>600</ValorLiquidoNfse>
+              <DescontoIncondicionado>0</DescontoIncondicionado>
+              <DescontoCondicionado>0</DescontoCondicionado>
+            </Valores>
+            <ItemListaServico>01.01</ItemListaServico>
+            <CodigoTributacaoMunicipio>
+            620150000</CodigoTributacaoMunicipio>
+            <Discriminacao>IMPLANTACAO ON DEMAND</Discriminacao>
+            <CodigoMunicipio>3524709</CodigoMunicipio>
+          </Servico>
+          <Prestador>
+            <Cnpj>02286968000151</Cnpj>
+            <InscricaoMunicipal>200265375</InscricaoMunicipal>
+          </Prestador>
+          <Tomador>
+            <IdentificacaoTomador>
+              <CpfCnpj>
+                <Cnpj>07674528000195</Cnpj>
+              </CpfCnpj>
+            </IdentificacaoTomador>
+            <RazaoSocial>1140-JC&amp;FILHOS COM.ATC.COMP.ALTO
+            FAL.LTDA EPP</RazaoSocial>
+            <Endereco>
+              <Endereco>ESTRADA DOS FERNANDES</Endereco>
+              <Numero>2351</Numero>
+              <Bairro>CASA BRANCA</Bairro>
+              <CodigoMunicipio>3552502</CodigoMunicipio>
+              <Uf>SP</Uf>
+              <Cep>08664005</Cep>
+            </Endereco>
+            <Contato>
+              <Email>denise_bobivox@hotmail.com</Email>
+            </Contato>
+          </Tomador>
+        </InfRps>
+      <ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="Ass_rps_23254">
+ <ds:SignedInfo>
+  <ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+  <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+  <ds:Reference URI="#rps_23254">
+   <ds:Transforms>
+    <ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+   </ds:Transforms>
+   <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+   <ds:DigestValue>F5i/SDDa1a2dob1/SZWywsCAlNE=</ds:DigestValue>
+  </ds:Reference>
+ </ds:SignedInfo>
+ <ds:SignatureValue>
+          vNzWGHPyq9y1j+AB9qDxtv/90zrNdrRFQOkExxWDYVaMMNydfX2NAQW3onSZksN9VTNbYg+X
+          MStFlkQhu0SVaw0hC9jTnukQ+sowZREnffIglY8Fq7aQJin9CQu+F5+Lq4IsRxq5J+tuNr1F
+          KiVMaJx0POEHf91vtydSebG3JXo=
+        </ds:SignatureValue>
+ <ds:KeyInfo>
+            <X509Data xmlns="http://www.w3.org/2000/09/xmldsig#">
+              <X509Certificate>
+                MIIBxTCCAS6gAwIBAgIQHBAj3179CbJDXHGdb29Y5TANBgkqhkiG9w0BAQsFADAhMR8wHQYD
+                VQQDHhYAVQBOAEkATQBFAEQAXABlAG4AaQBvMB4XDTEyMTAxODE4NDgzMVoXDTEzMTAxOTAw
+                NDgzMVowITEfMB0GA1UEAx4WAFUATgBJAE0ARQBEAFwAZQBuAGkAbzCBnzANBgkqhkiG9w0B
+                AQEFAAOBjQAwgYkCgYEAzWqtM5wWBmAgURzbjhKwE5lTG1DLCY8DZA4dxf/yE/h9ZUuPlT5A
+                LnavqW7jku1D11DqIIaxWD3tJ9fDCLpBAkdmEgWXqh15wl/UIAl83hwZavPnLIF7rw8gZFtD
+                N5Tr5iIODt25WVUNc2MScTo0M13WEr06ho6NzMF+ajfUInUCAwEAATANBgkqhkiG9w0BAQsF
+                AAOBgQAlYdicmEFDYI4hpQqVCIwXerPS//kXpZ3Q0lrO0HhqqJQZGGMfv0m59fXEepVdc5nG
+                asjxDbwrIbjSBntWl7Efrns2f43l5of5r32gwpx6a9PTHlUAazIY6tNpRKNeESVg3oQ+OM5I
+                gHMv16s5ixVlKX5FEC7fEFO2noeUgK4o9A==
+              </X509Certificate>
+            </X509Data>
+          </ds:KeyInfo>
+</ds:Signature></Rps>
+    </ListaRps>
+  </LoteRps>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="Ass_lote">
+ <ds:SignedInfo>
+  <ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+  <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+  <ds:Reference URI="#lote">
+   <ds:Transforms>
+    <ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+   </ds:Transforms>
+   <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+   <ds:DigestValue>VHwcn2lmr2ZE8ugWLsOzrFcwXkY=</ds:DigestValue>
+  </ds:Reference>
+ </ds:SignedInfo>
+ <ds:SignatureValue>
+    EBJwPd7OsvHsEUjjS2XV2lDo9FcrpgPHmaL8+lEbkUeUFqI871ZCWL2qaNP/r3JzafZ0ddEx
+    TfAuvdbcNkgnYviU8hbY9TkReZSxVTqaUAlG85p0oL6DQsrrzFcN5owvhFBV9d//xkEz33wr
+    YBrbdcpbOHOJgQgvJtNfLW5VEYE=
+  </ds:SignatureValue>
+ <ds:KeyInfo>
+      <X509Data xmlns="http://www.w3.org/2000/09/xmldsig#">
+        <X509Certificate>
+          MIIBxTCCAS6gAwIBAgIQHBAj3179CbJDXHGdb29Y5TANBgkqhkiG9w0BAQsFADAhMR8wHQYD
+          VQQDHhYAVQBOAEkATQBFAEQAXABlAG4AaQBvMB4XDTEyMTAxODE4NDgzMVoXDTEzMTAxOTAw
+          NDgzMVowITEfMB0GA1UEAx4WAFUATgBJAE0ARQBEAFwAZQBuAGkAbzCBnzANBgkqhkiG9w0B
+          AQEFAAOBjQAwgYkCgYEAzWqtM5wWBmAgURzbjhKwE5lTG1DLCY8DZA4dxf/yE/h9ZUuPlT5A
+          LnavqW7jku1D11DqIIaxWD3tJ9fDCLpBAkdmEgWXqh15wl/UIAl83hwZavPnLIF7rw8gZFtD
+          N5Tr5iIODt25WVUNc2MScTo0M13WEr06ho6NzMF+ajfUInUCAwEAATANBgkqhkiG9w0BAQsF
+          AAOBgQAlYdicmEFDYI4hpQqVCIwXerPS//kXpZ3Q0lrO0HhqqJQZGGMfv0m59fXEepVdc5nG
+          asjxDbwrIbjSBntWl7Efrns2f43l5of5r32gwpx6a9PTHlUAazIY6tNpRKNeESVg3oQ+OM5I
+          gHMv16s5ixVlKX5FEC7fEFO2noeUgK4o9A==
+        </X509Certificate>
+      </X509Data>
+    </ds:KeyInfo>
+</ds:Signature></EnviarLoteRpsEnvio>

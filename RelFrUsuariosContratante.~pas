@@ -1,0 +1,172 @@
+unit RelFrUsuariosContratante;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, RLReport, RLParser, DB, ADODB, RLFilters, RLPDFFilter;
+
+type
+  TFrListaUsuarioContratante = class(TForm)
+    RLReportH: TRLReport;
+    RLBandSummaryH: TRLBand;
+    RLBandDetailH: TRLBand;
+    RLBandColumnHeaderH: TRLBand;
+    RLBandHeaderH: TRLBand;
+    RLSystemInfoTitH: TRLSystemInfo;
+    RLSystemInfoEmtidoH: TRLSystemInfo;
+    RLSystemInfoLastPgH: TRLSystemInfo;
+    RLLabelBarraH: TRLLabel;
+    RLSystemInfoPgH: TRLSystemInfo;
+    RLLabelEmpresaH: TRLLabel;
+    RLGroupEmpresa: TRLGroup;
+    sp_relMensalidadeContrat: TADOStoredProc;
+    DataSourceH: TDataSource;
+    RLExpressionParserH: TRLExpressionParser;
+    RLGroupContrat: TRLGroup;
+    RLBand1: TRLBand;
+    RLDBText2: TRLDBText;
+    RLBand2: TRLBand;
+    RLLabel1: TRLLabel;
+    RLDBText1: TRLDBText;
+    RLBand3: TRLBand;
+    RLDBText3: TRLDBText;
+    RLDBText4: TRLDBText;
+    RLDBText5: TRLDBText;
+    RLDBText6: TRLDBText;
+    RLDBText7: TRLDBText;
+    RLDBText8: TRLDBText;
+    RLDBText9: TRLDBText;
+    RLBand4: TRLBand;
+    RLSystemInfo2: TRLSystemInfo;
+    RLLabel2: TRLLabel;
+    RLLabel3: TRLLabel;
+    RLLabel4: TRLLabel;
+    RLSystemInfo3: TRLSystemInfo;
+    RLBand5: TRLBand;
+    RLSystemInfo1: TRLSystemInfo;
+    RLDBResult4: TRLDBResult;
+    RLPDFFilter1: TRLPDFFilter;
+    RLLabel5: TRLLabel;
+    RLLabelCompl: TRLLabel;
+    RLLabel7: TRLLabel;
+    RLLabel8: TRLLabel;
+    RLLabel6: TRLLabel;
+    RLLabel9: TRLLabel;
+    RLDBText10: TRLDBText;
+    RLLabel10: TRLLabel;
+    RLLabel11: TRLLabel;
+    RLLabel12: TRLLabel;
+    RLLabelTotalContrat: TRLLabel;
+    RLLabel1Medicar: TRLLabel;
+    RLLabelMedicar: TRLLabel;
+    RLLabel13: TRLLabel;
+    RLLabel14: TRLLabel;
+    RLLabelTtEmpresa: TRLLabel;
+    RLLabel15: TRLLabel;
+    RLLabelTtEmpresa1: TRLLabel;
+    procedure RLBand1AfterPrint(Sender: TObject);
+    procedure RLBandSummaryHBeforePrint(Sender: TObject;
+      var PrintIt: Boolean);
+    procedure RLReportHBeforePrint(Sender: TObject; var PrintIt: Boolean);
+    procedure RLBand4BeforePrint(Sender: TObject; var PrintIt: Boolean);
+    procedure RLBand2BeforePrint(Sender: TObject; var PrintIt: Boolean);
+    procedure RLBand5BeforePrint(Sender: TObject; var PrintIt: Boolean);
+    procedure RLBand3BeforePrint(Sender: TObject; var PrintIt: Boolean);
+  private
+     qtVidas, Contcontrat : Word;
+      vrComplemento, ttEmpresa,ttzEmpresa,vrMedicarAux, Vrtotazao,ttContrat : real;
+
+  public
+    VrMinimoMens : real;
+    { Public declarations }
+  end;
+
+var
+  FrListaUsuarioContratante: TFrListaUsuarioContratante;
+
+implementation
+
+uses udm, Contratante, seltpRelEmrpesa;
+
+{$R *.dfm}
+
+procedure TFrListaUsuarioContratante.RLBand1AfterPrint(Sender: TObject);
+begin
+  ttEmpresa := ttEmpresa + sp_relMensalidadeContrat.FieldbyName('valor').AsCurrency;
+  ttContrat := ttContrat + sp_relMensalidadeContrat.FieldbyName('valor').AsCurrency;
+  qtVidas := qtVidas + 1;
+end;
+
+procedure TFrListaUsuarioContratante.RLBandSummaryHBeforePrint(
+  Sender: TObject; var PrintIt: Boolean);
+begin
+   RLLabelTtEmpresa1.caption := FormatFloat('R$###,###,###,##0.00',ttzEmpresa);
+   try
+     VrMinimoMens := strToFloat(dm.execmd('SELECT vr_minimo_plano vr FROM PLANO P, CONTRATANTE C WHERE C.Plano = P.Codigo AND C.Codigo = ' + fmSelRelEmpresa.ADOQuery1.fieldByName('codigo').AsString ,'vr'));
+   except
+     VrMinimoMens := 0;
+   end;
+
+   if (ttEmpresa < VrMinimoMens) and (VrMinimoMens > 0) then
+     vrComplemento := VrMinimoMens - ttEmpresa
+   else
+      VrMinimoMens := 0;
+
+   RLLabelCompl.Caption := FormatFloat('R$###,###,###,##0.00',vrComplemento);
+   RLLabel6.Caption := FormatFloat('R$###,###,###,##0.00',ttEmpresa + vrComplemento);
+   if qtVidas > 0 then
+      RLLabel9.Caption := FormatFloat('R$###,###,###,##0.00',(ttEmpresa + vrComplemento) / qtVidas)
+   else
+      RLLabel9.Caption := FormatFloat('R$###,###,###,##0.00',0);
+
+
+end;
+
+procedure TFrListaUsuarioContratante.RLReportHBeforePrint(Sender: TObject;
+  var PrintIt: Boolean);
+begin
+   ttzEmpresa := 0;
+   ttEmpresa := 0;
+   qtVidas := 0;
+   vrMedicarAux := StrToCurr(dm.execmd('select vl_parametro a from parametro where cd_parametro = ''VRMCAR''','a'));
+end;
+
+procedure TFrListaUsuarioContratante.RLBand4BeforePrint(Sender: TObject;
+  var PrintIt: Boolean);
+begin
+    RLLabelTotalContrat.Caption := FormatFloat('R$###,###,###,##0.00',ttContrat);
+    ttContrat := 0;
+end;
+
+procedure TFrListaUsuarioContratante.RLBand2BeforePrint(Sender: TObject;
+  var PrintIt: Boolean);
+begin
+   ttContrat := 0;
+end;
+
+procedure TFrListaUsuarioContratante.RLBand5BeforePrint(Sender: TObject;
+  var PrintIt: Boolean);
+begin
+    RLLabelTtEmpresa.caption := FormatFloat('R$###,###,###,##0.00',ttEmpresa);
+    ttzEmpresa := ttzEmpresa + ttEmpresa;
+    ttEmpresa := 0;
+   // RLLabelTtEmpresa1.caption := FormatFloat('R$###,###,###,##0.00',ttzEmpresa);
+end;
+
+procedure TFrListaUsuarioContratante.RLBand3BeforePrint(Sender: TObject;
+  var PrintIt: Boolean);
+begin
+     // coloquei aqui porque no evento RLBand4BeforePrint nao funciona.. para entender o bug só colocar o RLDBText10 RLBand4 veras que nao sai o nome correspondente.  
+    if sp_relMensalidadeContrat.FieldbyName('lg_gerarVrMedicarTelefone').AsBoolean then
+    begin
+       RLLabelMedicar.Caption := FormatFloat('R$###,###,###,##0.00',vrMedicarAux);
+       ttContrat := ttContrat + vrMedicarAux;
+       ttEmpresa := ttEmpresa + vrMedicarAux;
+    end
+    else
+       RLLabelMedicar.Caption := FormatFloat('R$###,###,###,##0.00',0);
+
+end;
+
+end.

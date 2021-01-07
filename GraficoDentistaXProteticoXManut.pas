@@ -1,0 +1,81 @@
+unit GraficoDentistaXProteticoXManut;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, DB, ADODB, TeEngine, Series, TeeProcs, Chart, DbChart, StdCtrls,
+  Mask, ExtCtrls;
+
+type
+  TfmGrafDentistaXProteticoXManut = class(TForm)
+    Panel1: TPanel;
+    GroupBox1: TGroupBox;
+    MaskEditDtVIni: TMaskEdit;
+    MaskEditDtVFim: TMaskEdit;
+    Button1: TButton;
+    DBChart1: TDBChart;
+    Series1: TBarSeries;
+    Series2: TBarSeries;
+    sp_graficoGastosProtDentManut: TADOStoredProc;
+    Series3: TBarSeries;
+    Label1: TLabel;
+    DBChartTotal: TDBChart;
+    Label2: TLabel;
+    Series4: TBarSeries;
+    CheckBox1: TCheckBox;
+    procedure Button1Click(Sender: TObject);
+    procedure DBChart1Click(Sender: TObject);
+    procedure DBChartTotalClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  fmGrafDentistaXProteticoXManut: TfmGrafDentistaXProteticoXManut;
+
+implementation
+
+{$R *.dfm}
+
+procedure TfmGrafDentistaXProteticoXManut.Button1Click(Sender: TObject);
+var  vrDentista, vrProtetico, vrManutencao : real;
+begin
+  sp_graficoGastosProtDentManut.close;
+  sp_graficoGastosProtDentManut.Parameters[1].Value :=  MaskEditDtVIni.Text;
+  sp_graficoGastosProtDentManut.Parameters[2].Value :=  MaskEditDtVFim.Text;
+  sp_graficoGastosProtDentManut.Parameters[3].Value :=  CheckBox1.Checked;     
+  sp_graficoGastosProtDentManut.Open;
+  vrDentista := 0;
+  vrProtetico := 0;
+  vrManutencao := 0;
+  while not sp_graficoGastosProtDentManut.Eof do
+  begin
+     vrDentista := vrDentista + sp_graficoGastosProtDentManut.FieldByName('vrDentista').asCurrency;
+     vrProtetico := vrProtetico + sp_graficoGastosProtDentManut.FieldByName('vrProtetico').asCurrency;
+     vrManutencao := vrManutencao + sp_graficoGastosProtDentManut.FieldByName('vrManutencao').asCurrency;
+     sp_graficoGastosProtDentManut.next;
+  end;
+  Label1.Caption := 'Total Dentista : ' + FormatFloat('R$###,###,##0.00',vrDentista) + ' ==>   Total Protético : ' + FormatFloat('R$###,###,##0.00',vrProtetico) + ' ==>   Total Manutenção : ' + FormatFloat('R$###,###,##0.00',vrManutencao) + ' ==>    Total : ' + FormatFloat('R$###,###,##0.00',vrManutencao + vrProtetico + vrDentista )  ;
+  Label2.Caption := Label1.Caption ;
+
+//  DBChart1.PreviousPage;
+
+end;
+
+procedure TfmGrafDentistaXProteticoXManut.DBChart1Click(Sender: TObject);
+begin
+   dbchart1.Visible := false;
+   dbchartTotal.Visible := true;
+end;
+
+procedure TfmGrafDentistaXProteticoXManut.DBChartTotalClick(
+  Sender: TObject);
+begin
+   dbchart1.Visible := true;
+   dbchartTotal.Visible := false;
+end;
+
+end.
